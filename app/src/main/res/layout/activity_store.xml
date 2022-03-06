@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user_dashboard.activity.StoreActivity">
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
+           <androidx.constraintlayout.widget.ConstraintLayout
+               android:layout_width="match_parent"
+               android:layout_height="180dp">
+               <ImageView
+                   android:id="@+id/storeArtImage"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/banner"
+                   android:scaleType="centerCrop"/>
+
+               <View
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="#562AA601"/>
+
+               <androidx.cardview.widget.CardView
+                   android:layout_width="80dp"
+                   android:layout_height="80dp"
+                   android:layout_margin="10dp"
+                   app:cardCornerRadius="90dp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintStart_toStartOf="parent">
+
+                   <ImageView
+                       android:id="@+id/storeLogoImage"
+                       android:src="@drawable/store2"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       />
+               </androidx.cardview.widget.CardView>
+
+
+           </androidx.constraintlayout.widget.ConstraintLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_marginStart="5dp"
+               android:layout_marginTop="5dp">
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="Store Details"
+                   android:textStyle="italic"
+                   android:layout_marginStart="10dp"/>
+
+               <TextView
+                   android:id="@+id/storeName"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textSize="25sp"
+                   android:fontFamily="@font/roboto_regular"
+                   android:textColor="@color/black"
+                   android:textStyle="bold"
+                   android:layout_marginTop="5dp"
+                   />
+
+               <TextView
+                   android:id="@+id/storeSlogan"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:fontFamily="@font/roboto_regular"
+                   android:textColor="@color/theam_color"
+                   />
+
+               <TextView
+                   android:id="@+id/storeEmail"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:fontFamily="@font/roboto_regular"
+                   android:textStyle="italic"
+                   />
+               <TextView
+                   android:id="@+id/storeDescription"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:fontFamily="@font/roboto_regular"
+                   android:textStyle="normal"
+                   />
+
+           </LinearLayout>
+
+           <View
+               android:layout_width="match_parent"
+               android:layout_height="1dp"
+               android:layout_margin="10dp"
+               android:background="@color/grey"/>
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="All Product"
+               android:layout_margin="5dp"/>
+
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/allProductByStore"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+
+
+       </LinearLayout>
+
+
+
+   </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

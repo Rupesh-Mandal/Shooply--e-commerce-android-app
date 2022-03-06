@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "318200280167",
+    "project_id": "shooply-d2dc0",
+    "storage_bucket": "shooply-d2dc0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318200280167:android:9d3ebaf81389a8cde250c2",
+        "android_client_info": {
+          "package_name": "com.firoz.shooply"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318200280167-m20891iegn833ppi6si7tnnslv59i1mj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUlZtbMH1htWB0wL3lGac2HYvZwD-RLqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318200280167-m20891iegn833ppi6si7tnnslv59i1mj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/seller_dashboard_nav"
+    app:startDestination="@id/sellerOrdersFragment">
+
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.firoz.shooply.seller_dashboard.fragment.ProductsFragment"
+        android:label="fragment_products"
+        tools:layout="@layout/fragment_products" />
+    <fragment
+        android:id="@+id/sellerOrdersFragment"
+        android:name="com.firoz.shooply.seller_dashboard.fragment.SellerOrdersFragment"
+        android:label="fragment_seller_orders"
+        tools:layout="@layout/fragment_seller_orders" />
+    <fragment
+        android:id="@+id/storFragment"
+        android:name="com.firoz.shooply.seller_dashboard.fragment.StorFragment"
+        android:label="fragment_stor"
+        tools:layout="@layout/fragment_stor" />
+</navigation>

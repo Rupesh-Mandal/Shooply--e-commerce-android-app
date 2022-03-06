@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Shooply</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    username = doadmin
+    password = nNbEXLxXMB4APDjQ
+    host = shooply-do-user-10847475-0.b.db.ondigitalocean.com
+    port = 25060
+    database = defaultdb
+    sslmode = REQUIRED
+
+    139.59.46.233
+</resources>
