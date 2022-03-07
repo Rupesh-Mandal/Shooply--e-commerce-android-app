@@ -29,6 +29,8 @@ import com.firoz.shooply.R;
 import com.firoz.shooply.checkout.adapter.PaymentListAdapter;
 import com.firoz.shooply.model.CartModel;
 import com.firoz.shooply.user_dashboard.UserDashboardActivity;
+import com.firoz.shooply.user_dashboard.helper.CartHelper;
+import com.firoz.shooply.util.ResponsListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,213 +42,45 @@ import java.util.List;
 
 public class CheckOutActivity extends AppCompatActivity {
 
-    TextView total;
     RecyclerView payment_recyclerView;
     Button cash_on_delivery;
-    List<CartModel> cartModelList = new ArrayList<>();
     ProgressDialog progressDialog;
-    SharedPreferences sharedpreferences;
-    String userId,userName;
+    JSONArray orderArray = new JSONArray();
 
+    CartHelper cartHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_out);
-//        sharedpreferences = getContext().getSharedPreferences("MyPREFERENCES", getContext().MODE_PRIVATE);
-//        try {
-//            JSONObject jsonObject = new JSONObject(sharedpreferences.getString("authUser", ""));
-//            userId = jsonObject.getString("userId");
-//            userName = jsonObject.getString("name");
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        total = view.findViewById(R.id.total);
-//        cash_on_delivery = view.findViewById(R.id.cash_on_delivery);
-//        payment_recyclerView = view.findViewById(R.id.payment_recyclerView);
-//        payment_recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-//        progressDialog=new ProgressDialog(getContext());
-//        progressDialog.setMessage("Please Wait");
-//        total.setText(String.valueOf(totalAmount));
-//
-//        getTasks();
-//        cash_on_delivery.setOnClickListener(v -> {
-//            progressDialog.show();
-//            String url=oderProduct;
-//
-//            JSONArray jsonArray=new JSONArray();
-//
-//            for (int i=0;i<taskForOrder.size();i++){
-//                Task task=taskForOrder.get(i);
-//
-//                JSONObject jsonObject=new JSONObject();
-//                try {
-//                    jsonObject.put("productId",task.getProductId());
-//                    jsonObject.put("storeId",task.getStoreId());
-//                    jsonObject.put("storeName",task.getStoreName());
-//                    jsonObject.put("storeEmail",task.getStoreEmail());
-//                    jsonObject.put("productName",task.getProductName());
-//                    jsonObject.put("productDescription",task.getProductDescription());
-//                    jsonObject.put("productQuantity",String.valueOf(task.getCount()));
-//                    jsonObject.put("productRate",task.getProductRate());
-//
-//                    double q=task.getCount();
-//                    double r= Double.parseDouble(task.getProductRate());
-//                    double total=q*r;
-//
-//                    jsonObject.put("productTotalRate",String.valueOf(total));
-//                    jsonObject.put("productDeliverAddress",address.getProductDeliverAddress());
-//                    jsonObject.put("productImageLink",task.getProductImageLink());
-//                    jsonObject.put("productCategory",task.getProductCategory());
-//                    jsonObject.put("userPhoneNumber",address.getUserPhoneNumber());
-//                    jsonObject.put("userName","");
-//                    jsonObject.put("userId",userId);
-//
-//                    jsonArray.put(jsonObject);
-//
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    progressDialog.dismiss();
-//                    Log.e("abcd",e.toString());
-//                    Toast.makeText(getContext(), "something went worng error= "+e.toString(), Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
-//            Log.e("abcd",jsonArray.toString());
-//            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-//
-//            final String mRequestBody = jsonArray.toString();
-//            Log.e("abcd",mRequestBody);
-//
-//            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String response) {
-//                    progressDialog.dismiss();
-//                    Log.e("abcd",response);
-//                    try {
-//                        JSONObject responseObject=new JSONObject(response);
-//                        boolean status =responseObject.getBoolean("status");
-//                        if (status){
-//                            Toast.makeText(getContext(), responseObject.getString("messag"), Toast.LENGTH_SHORT).show();
-//                            deleteAllTask(getContext());
-//
-//                        }else {
-//                            Toast.makeText(getContext(), responseObject.getString("messag"), Toast.LENGTH_SHORT).show();
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(getContext(), "something went worng", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    progressDialog.dismiss();
-//                    Log.e("abcd",error.toString());
-//                    Toast.makeText(getContext(), "something went worng error= "+error.toString(), Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }) {
-//                @Override
-//                public String getBodyContentType() {
-//                    return "application/json; charset=utf-8";
-//                }
-//
-//                @Override
-//                public byte[] getBody() throws AuthFailureError {
-//                    try {
-//                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-//                    } catch (UnsupportedEncodingException uee) {
-//                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-//                        return null;
-//                    }
-//                }
-//
-//            };
-//
-//            requestQueue.add(stringRequest);
-//
-//
-//
-//        });
-    }
+        payment_recyclerView=findViewById(R.id.payment_recyclerView);
+        cash_on_delivery=findViewById(R.id.cash_on_delivery);
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setMessage("Please Waite");
+        String object=getIntent().getStringExtra("orderArray");
+        try {
+            orderArray=new JSONArray(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        cartHelper=new CartHelper(this);
 
-//    private static void deleteAllTask(Context context) {
-//        progressDialog.show();
-//        class DeleteTask extends AsyncTask<Void, Void, Void> {
-//
-//            @Override
-//            protected Void doInBackground(Void... voids) {
-//                DatabaseClient.getInstance(context).getAppDatabase()
-//                        .taskDao()
-//                        .deleteAll();
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-//                super.onPostExecute(aVoid);
-//                progressDialog.dismiss();
-//                Intent intent=new Intent(context, UserDashboardActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                context.startActivity(intent);
-//            }
-//        }
-//
-//        DeleteTask dt = new DeleteTask();
-//        dt.execute();
-//
-//    }
-//
-//    private void getTasks() {
-//        progressDialog.show();
-//        class GetTasks extends AsyncTask<Void, Void, List<Task>> {
-//
-//            @Override
-//            protected List<Task> doInBackground(Void... voids) {
-//                List<Task> taskList = DatabaseClient
-//                        .getInstance(getContext())
-//                        .getAppDatabase()
-//                        .taskDao()
-//                        .getAll();
-//                return taskList;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(List<Task> tasks) {
-//                super.onPostExecute(tasks);
-//                progressDialog.dismiss();
-//                totalAmount = 0;
-//                totalItem=0;
-//                taskForOrder=tasks;
-//                for (int i = 0; i < tasks.size(); i++) {
-//                    Task task = tasks.get(i);
-//                    double rate = Double.parseDouble(task.getProductRate());
-//                    double quntity = task.getCount();
-//
-//                    double amount = rate * quntity;
-//                    totalAmount = totalAmount + amount;
-//                    totalItem=totalItem+quntity;
-//                    Log.e("abcd", String.valueOf(tasks.get(i)));
-//
-//                }
-//                taskList = tasks;
-//                PaymentListAdapter paymentListAdapter = new PaymentListAdapter(getContext(), taskList);
-//                payment_recyclerView.setAdapter(paymentListAdapter);
-//                paymentListAdapter.notifyDataSetChanged();
-//
-//
-//                total.setText(String.valueOf(totalAmount));
-//
-//
-//            }
-//        }
-//
-//        GetTasks gt = new GetTasks();
-//        gt.execute();
-//    }
+        payment_recyclerView.setLayoutManager(new GridLayoutManager(this,1));
+        PaymentListAdapter paymentListAdapter=new PaymentListAdapter(this,orderArray);
+        payment_recyclerView.setAdapter(paymentListAdapter);
+
+
+        cash_on_delivery.setOnClickListener(view -> {
+            cartHelper.addOrder(orderArray, new ResponsListener() {
+                @Override
+                public void onSuccess(String response) {
+
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        });
+    }
 }

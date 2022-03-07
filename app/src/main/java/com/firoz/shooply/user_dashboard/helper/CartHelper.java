@@ -5,6 +5,7 @@ import static com.firoz.shooply.util.Constant.addToCart;
 import static com.firoz.shooply.util.Constant.deleteCart;
 import static com.firoz.shooply.util.Constant.getAddressByUserId;
 import static com.firoz.shooply.util.Constant.getAllCartList;
+import static com.firoz.shooply.util.Constant.oderProduct;
 import static com.firoz.shooply.util.Constant.updateCart;
 
 import android.app.ProgressDialog;
@@ -280,6 +281,43 @@ public class CartHelper {
 
         requestQueue.add(stringRequest);
 
+    }
+
+    public void addOrder(JSONArray orderArray, ResponsListener responsListener){
+        String url = oderProduct;
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        final String mRequestBody = new Gson().toJson(orderArray);
+        Log.e("abcd", mRequestBody);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                responsListener.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("abcd", error.getMessage());
+                responsListener.onError(error.toString());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+
+        requestQueue.add(stringRequest);
     }
 
 }

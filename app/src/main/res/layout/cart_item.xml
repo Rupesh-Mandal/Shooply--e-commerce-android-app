@@ -6,12 +6,25 @@
     android:layout_height="wrap_content"
     android:padding="5dp">
 
+    <CheckBox
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/isCheck"
+        android:button="@drawable/custom_round_checkbox"
+        android:clickable="true"
+        android:focusable="true"
+        android:checked="true"
+        android:buttonTint="@color/theam_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/item_img"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/isCheck"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

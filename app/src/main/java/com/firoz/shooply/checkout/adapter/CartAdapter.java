@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -14,21 +16,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.firoz.shooply.R;
+import com.firoz.shooply.model.CartIsCheck;
 import com.firoz.shooply.model.CartModel;
 import com.firoz.shooply.util.CartOnclick;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> {
 
     Context context;
     List<CartModel> cartModelList;
+    List<CartIsCheck> cartIsCheckList=new ArrayList<>();
     CartOnclick cartOnclick;
 
     public CartAdapter(Context context, List<CartModel> cartModelList, CartOnclick cartOnclick) {
         this.context = context;
         this.cartModelList = cartModelList;
         this.cartOnclick = cartOnclick;
+    }
+    public List<CartModel> getSelectedCart(){
+        List<CartModel> selectCartModelList=new ArrayList<>();
+
+        for (int i=0;i<cartModelList.size();i++){
+            if (cartIsCheckList.get(i).isCheck()){
+                selectCartModelList.add(cartModelList.get(i));
+            }
+        }
+        return selectCartModelList;
     }
 
     @NonNull
@@ -45,6 +60,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> 
         double c1 = Double.parseDouble(cartModel.getQuantity());
 
         double rate=r1*c1;
+
         Glide.with(context).load(cartModel.getProductImageLink()).into(holder.item_img);
 
         holder.item_title.setText(cartModel.getProductName());
@@ -104,6 +120,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> 
             //displaying the popup
             popup.show();
         });
+        cartIsCheckList.add(new CartIsCheck(holder.isCheck.isChecked()));
+        holder.isCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                cartIsCheckList.set(position,new CartIsCheck(isChecked));
+            }
+        });
 
     }
 
@@ -116,7 +139,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> 
         ImageView item_img,menu;
         ImageView count_negative,count_positive;
         TextView item_title,item_rate,count,productDescription,mrp,discount;
-
+        CheckBox isCheck;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -130,6 +153,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> 
             productDescription=itemView.findViewById(R.id.productDescription);
             mrp=itemView.findViewById(R.id.mrp);
             discount=itemView.findViewById(R.id.discount);
+            isCheck=itemView.findViewById(R.id.isCheck);
         }
     }
+
+
 }

@@ -12,18 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firoz.shooply.R;
 import com.firoz.shooply.model.CartModel;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 
 public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.myViewHolder> {
 
     Context context;
-    List<CartModel> cartModelList;
+    JSONArray orderArray;
 
 
-    public PaymentListAdapter(Context context, List<CartModel> cartModelList) {
+    public PaymentListAdapter(Context context, JSONArray orderArray) {
         this.context = context;
-        this.cartModelList = cartModelList;
+        this.orderArray = orderArray;
     }
 
     @NonNull
@@ -35,22 +39,27 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        CartModel cartModel=cartModelList.get(position);
-        holder.name.setText(cartModel.getProductName());
-        holder.quantity.setText(String.valueOf(cartModel.getQuantity()));
-        holder.rate.setText(cartModel.getProductRate());
+        try {
+            JSONObject jsonObject=orderArray.getJSONObject(position);
+            holder.name.setText(jsonObject.getString("productName"));
+            holder.quantity.setText(jsonObject.getString("quantity"));
+            holder.rate.setText(jsonObject.getString("productRate"));
 
-        double q= Double.parseDouble(cartModel.getQuantity());
-        double r= Double.parseDouble(cartModel.getProductRate());
-        double a=q*r;
+            double q= Double.parseDouble(jsonObject.getString("quantity"));
+            double r= Double.parseDouble(jsonObject.getString("productRate"));
+            double a=q*r;
 
-        holder.amount.setText(String.valueOf(a));
+            holder.amount.setText(String.valueOf(a));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
     @Override
     public int getItemCount() {
-        return cartModelList.size();
+        return orderArray.length();
     }
 
 

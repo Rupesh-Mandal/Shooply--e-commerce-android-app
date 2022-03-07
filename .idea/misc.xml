@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/bottom_sheet_shap.xml" value="0.1945" />
+        <entry key="app/src/main/res/drawable/custom_round_checkbox.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/discount_arrow.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/ic_baseline_camera_alt_24.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1945" />

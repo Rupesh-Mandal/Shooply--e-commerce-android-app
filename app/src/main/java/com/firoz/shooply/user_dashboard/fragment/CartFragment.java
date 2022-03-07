@@ -1,6 +1,7 @@
 package com.firoz.shooply.user_dashboard.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.firoz.shooply.R;
 import com.firoz.shooply.checkout.adapter.CartAdapter;
 import com.firoz.shooply.model.CartModel;
 import com.firoz.shooply.model.OrderModel;
+import com.firoz.shooply.user_dashboard.activity.SelectAddressActivity;
 import com.firoz.shooply.user_dashboard.helper.CartHelper;
 import com.firoz.shooply.util.CartOnclick;
 import com.firoz.shooply.util.ResponsListener;
@@ -71,7 +74,10 @@ public class CartFragment extends Fragment {
 
         check_out_btn.setOnClickListener(v -> {
             if (cartModelArrayList.size()>0){
-
+                List<CartModel> selectCartModelList=cartAdapter.getSelectedCart();
+                Intent intent=new Intent(getContext(), SelectAddressActivity.class);
+                intent.putExtra("selectCartModelList",new Gson().toJson(selectCartModelList));
+                startActivity(new Intent(intent));
             }else {
                 Toast.makeText(getContext(), "Please Add Some Item in Cart", Toast.LENGTH_SHORT).show();
             }
@@ -105,7 +111,7 @@ public class CartFragment extends Fragment {
     }
 
     private void setCartList() {
-        CartAdapter cartAdapter=new CartAdapter(getContext(), cartModelArrayList, new CartOnclick() {
+        cartAdapter=new CartAdapter(getContext(), cartModelArrayList, new CartOnclick() {
             @Override
             public void increaseCart(CartModel cartModel) {
                 cartHelper.updateCart(cartModel, new ResponsListener() {
