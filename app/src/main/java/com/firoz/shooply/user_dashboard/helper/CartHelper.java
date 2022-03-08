@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -286,12 +287,13 @@ public class CartHelper {
     public void addOrder(JSONArray orderArray, ResponsListener responsListener){
         String url = oderProduct;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        final String mRequestBody = new Gson().toJson(orderArray);
+        final String mRequestBody = orderArray.toString();
         Log.e("abcd", mRequestBody);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.e("abcd",response);
                 responsListener.onSuccess(response);
             }
         }, new Response.ErrorListener() {
@@ -316,7 +318,7 @@ public class CartHelper {
                 }
             }
         };
-
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 

@@ -1,24 +1,31 @@
 package com.firoz.shooply.model;
 
+import java.time.LocalDateTime;
+
 public class OrderModel {
     private Long id;
     private String orderId;
     private String productId;
+    private String userId;
     private String storeId;
     private String storeName;
     private String storeEmail;
     private String productName;
     private String productDescription;
-    private String productQuantity;
     private String productRate;
-    private String productTotalRate;
-    private String productDeliverAddress;
-
     private String productImageLink;
-    private String productCategory;
+    private String mrp;
+    private String discount;
+    private String storeCategoryId;
+    private String storecategory;
+    private String sub_category;
+    private String quantity;
+
+    private String productDeliverAddress;
     private String userPhoneNumber;
     private String userName;
-    private String userId;
+    private String productTotalRate;
+
     private String status;
     private String statusMessage;
     private String createdTime;
@@ -26,23 +33,28 @@ public class OrderModel {
     public OrderModel() {
     }
 
-    public OrderModel(Long id, String orderId, String productId, String storeId, String storeName, String storeEmail, String productName, String productDescription, String productQuantity, String productRate, String productTotalRate, String productImageLink, String productCategory, String userPhoneNumber, String userName, String userId, String status, String statusMessage, String createdTime) {
+    public OrderModel(Long id, String orderId, String productId, String userId, String storeId, String storeName, String storeEmail, String productName, String productDescription, String productRate, String productImageLink, String mrp, String discount, String storeCategoryId, String storecategory, String sub_category, String quantity, String productDeliverAddress, String userPhoneNumber, String userName, String productTotalRate, String status, String statusMessage, String createdTime) {
         this.id = id;
         this.orderId = orderId;
         this.productId = productId;
+        this.userId = userId;
         this.storeId = storeId;
         this.storeName = storeName;
         this.storeEmail = storeEmail;
         this.productName = productName;
         this.productDescription = productDescription;
-        this.productQuantity = productQuantity;
         this.productRate = productRate;
-        this.productTotalRate = productTotalRate;
         this.productImageLink = productImageLink;
-        this.productCategory = productCategory;
+        this.mrp = mrp;
+        this.discount = discount;
+        this.storeCategoryId = storeCategoryId;
+        this.storecategory = storecategory;
+        this.sub_category = sub_category;
+        this.quantity = quantity;
+        this.productDeliverAddress = productDeliverAddress;
         this.userPhoneNumber = userPhoneNumber;
         this.userName = userName;
-        this.userId = userId;
+        this.productTotalRate = productTotalRate;
         this.status = status;
         this.statusMessage = statusMessage;
         this.createdTime = createdTime;
@@ -120,13 +132,8 @@ public class OrderModel {
         this.productDescription = productDescription;
     }
 
-    public String getProductQuantity() {
-        return productQuantity;
-    }
 
-    public void setProductQuantity(String productQuantity) {
-        this.productQuantity = productQuantity;
-    }
+
 
     public String getProductRate() {
         return productRate;
@@ -152,13 +159,8 @@ public class OrderModel {
         this.productImageLink = productImageLink;
     }
 
-    public String getProductCategory() {
-        return productCategory;
-    }
 
-    public void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
-    }
+
 
     public String getUserPhoneNumber() {
         return userPhoneNumber;
@@ -198,6 +200,54 @@ public class OrderModel {
 
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
+    }
+
+    public String getMrp() {
+        return mrp;
+    }
+
+    public void setMrp(String mrp) {
+        this.mrp = mrp;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public String getStoreCategoryId() {
+        return storeCategoryId;
+    }
+
+    public void setStoreCategoryId(String storeCategoryId) {
+        this.storeCategoryId = storeCategoryId;
+    }
+
+    public String getStorecategory() {
+        return storecategory;
+    }
+
+    public void setStorecategory(String storecategory) {
+        this.storecategory = storecategory;
+    }
+
+    public String getSub_category() {
+        return sub_category;
+    }
+
+    public void setSub_category(String sub_category) {
+        this.sub_category = sub_category;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
     public String getCreatedTime() {

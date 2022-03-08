@@ -1,6 +1,7 @@
-package com.firoz.shooply.user_dashboard.adapter;
+package com.firoz.shooply.user_dashboard.me.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,25 +14,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firoz.shooply.R;
 import com.firoz.shooply.model.OrderModel;
-import com.firoz.shooply.util.UserOrderOnclick;
+import com.firoz.shooply.user_dashboard.activity.ProductDetailByProductIdActivity;
 
 import java.util.ArrayList;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.myViewHolder>{
+public class OrderStartedAdapter extends RecyclerView.Adapter<OrderStartedAdapter.myViewHolder>{
+
     Context context;
     ArrayList<OrderModel> orderModelArrayList;
-    UserOrderOnclick userOrderOnclick;
 
-    public UserAdapter(Context context, ArrayList<OrderModel> orderModelArrayList, UserOrderOnclick userOrderOnclick) {
+    public OrderStartedAdapter(Context context, ArrayList<OrderModel> orderModelArrayList) {
         this.context = context;
         this.orderModelArrayList = orderModelArrayList;
-        this.userOrderOnclick = userOrderOnclick;
     }
+
 
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new myViewHolder(LayoutInflater.from(context).inflate(R.layout.user_order_item,null,false));
+        return new myViewHolder(LayoutInflater.from(context).inflate(R.layout.started_order_item,null,false));
+
     }
 
     @Override
@@ -44,18 +46,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.myViewHolder>{
         holder.productQuantity.setText(orderModel.getQuantity());
         holder.statusMessage.setText(orderModel.getStatusMessage());
 
-        String status=orderModel.getStatus();
 
-        if (status.trim().equals("1")){
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent=new Intent(context, ProductDetailByProductIdActivity.class);
+            intent.putExtra("productId",orderModel.getProductId());
+            context.startActivity(intent);
+        });
 
-
-        }
     }
 
     @Override
     public int getItemCount() {
         return orderModelArrayList.size();
     }
+
 
     class myViewHolder extends RecyclerView.ViewHolder {
         ImageView productImageLink;

@@ -49,7 +49,7 @@ public class SellerOrderAdapter extends RecyclerView.Adapter<SellerOrderAdapter.
 
         holder.productName.setText(orderModel.getProductName());
         holder.totalRate.setText(orderModel.getProductTotalRate());
-        holder.productQuantity.setText(orderModel.getProductQuantity());
+        holder.productQuantity.setText(orderModel.getQuantity());
         holder.deliverAddress.setText(orderModel.getProductDeliverAddress());
 
         holder.itemView.setOnClickListener(view -> {

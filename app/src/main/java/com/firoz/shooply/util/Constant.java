@@ -17,6 +17,7 @@ public class Constant {
     public static final String addProduct=BaseUrl+"/product/addProduct";
     public static final String updateProduct=BaseUrl+"/product/updateProduct";
     public static final String getAllProductSeller=BaseUrl+"/product/getAllProductSeller";
+    public static final String findByProductId=BaseUrl+"/product/findByProductId";
     public static final String findByStorecategory=BaseUrl+"/product/findByStorecategory";
     public static final String deletProduct=BaseUrl+"/product/deletProduct";
     public static final String loadSearch=BaseUrl+"/product/loadSearch";
@@ -35,6 +36,10 @@ public class Constant {
     public static final String getAllCartList=BaseUrl+"/order/getAllCartList";
     public static final String updateCart=BaseUrl+"/order/updateCart";
     public static final String deleteCart=BaseUrl+"/order/deleteCart";
+    public static final String getOrderHistory=BaseUrl+"/order/getOrderHistory";
+    public static final String getStartedOrder=BaseUrl+"/order/getStartedOrder";
+    public static final String getPendingOrder=BaseUrl+"/order/getPendingOrder";
+    public static final String cancelOrderByUser=BaseUrl+"/order/cancelOrderByUser";
 
 
 

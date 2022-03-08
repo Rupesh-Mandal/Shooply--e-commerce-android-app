@@ -29,7 +29,7 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
             String body=remoteMessage.getData().get("body");
 
             Notification notification=new NotificationCompat.Builder(this, App.FCM_CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_baseline_about_24)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle(title)
                     .setContentText(body)
                     .setAutoCancel(true)

@@ -48,7 +48,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         productDescription.setText(orderModel.getProductDescription());
         productRate.setText(orderModel.getProductRate());
         totalRate.setText(orderModel.getProductTotalRate());
-        productQuantity.setText(orderModel.getProductQuantity());
+        productQuantity.setText(orderModel.getQuantity());
         deliverAddress.setText(orderModel.getProductDeliverAddress());
         userName.setText(orderModel.getUserName());
         userPhoneNumber.setText(orderModel.getUserPhoneNumber());

@@ -1,6 +1,7 @@
 package com.firoz.shooply.checkout.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.firoz.shooply.R;
 import com.firoz.shooply.model.CartIsCheck;
 import com.firoz.shooply.model.CartModel;
+import com.firoz.shooply.user_dashboard.activity.ProductDetailByProductIdActivity;
 import com.firoz.shooply.util.CartOnclick;
 
 import java.util.ArrayList;
@@ -126,6 +128,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> 
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 cartIsCheckList.set(position,new CartIsCheck(isChecked));
             }
+        });
+
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent=new Intent(context, ProductDetailByProductIdActivity.class);
+            intent.putExtra("productId",cartModel.getProductId());
+            context.startActivity(intent);
         });
 
     }

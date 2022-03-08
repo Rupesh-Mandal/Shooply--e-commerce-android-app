@@ -70,15 +70,32 @@ public class CheckOutActivity extends AppCompatActivity {
 
 
         cash_on_delivery.setOnClickListener(view -> {
+            progressDialog.show();
             cartHelper.addOrder(orderArray, new ResponsListener() {
                 @Override
                 public void onSuccess(String response) {
+                    progressDialog.dismiss();
+                    try {
+                        JSONObject jsonObject=new JSONObject(response);
+                        if (jsonObject.getBoolean("status")){
+                            Intent intent=new Intent(CheckOutActivity.this,UserDashboardActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            Toast.makeText(CheckOutActivity.this, jsonObject.getString("massage"), Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(CheckOutActivity.this, jsonObject.getString("massage"), Toast.LENGTH_SHORT).show();
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(CheckOutActivity.this, e.toString() , Toast.LENGTH_SHORT).show();
+                    }
 
                 }
 
                 @Override
                 public void onError(String error) {
-
+                    progressDialog.dismiss();
                 }
             });
         });
