@@ -1,19 +1,21 @@
 package com.firoz.shooply.model;
 
 public class AddressBookModel {
-
     private Long id;
-    private String productDeliverAddress;
+
     private String userId;
+    private String addressId;
+    private String productDeliverAddress;
     private String userPhoneNumber;
 
     public AddressBookModel() {
     }
 
-    public AddressBookModel(Long id, String productDeliverAddress, String userId, String userPhoneNumber) {
+    public AddressBookModel(Long id, String userId, String addressId, String productDeliverAddress, String userPhoneNumber) {
         this.id = id;
-        this.productDeliverAddress = productDeliverAddress;
         this.userId = userId;
+        this.addressId = addressId;
+        this.productDeliverAddress = productDeliverAddress;
         this.userPhoneNumber = userPhoneNumber;
     }
 
@@ -25,20 +27,28 @@ public class AddressBookModel {
         this.id = id;
     }
 
-    public String getProductDeliverAddress() {
-        return productDeliverAddress;
-    }
-
-    public void setProductDeliverAddress(String productDeliverAddress) {
-        this.productDeliverAddress = productDeliverAddress;
-    }
-
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getProductDeliverAddress() {
+        return productDeliverAddress;
+    }
+
+    public void setProductDeliverAddress(String productDeliverAddress) {
+        this.productDeliverAddress = productDeliverAddress;
     }
 
     public String getUserPhoneNumber() {

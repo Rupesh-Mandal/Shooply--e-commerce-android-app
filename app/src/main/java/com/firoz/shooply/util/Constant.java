@@ -25,7 +25,11 @@ public class Constant {
     public static final String getAllProductUser=BaseUrl+"/product/getAllProductUser";
 
     public static final String getAddressByUserId=BaseUrl+"/addressBook/getAddressByUserId";
+    public static final String getDefaultAddressByUserId=BaseUrl+"/addressBook/getDefaultAddressByUserId";
     public static final String addAddress=BaseUrl+"/addressBook/addAddress";
+    public static final String deleteByAddressId=BaseUrl+"/addressBook/deleteByAddressId";
+    public static final String setDefaultAddress=BaseUrl+"/addressBook/setDefaultAddress";
+    public static final String updateAddress=BaseUrl+"/addressBook/updateAddress";
 
     public static final String getAllCategory=BaseUrl+"/admin/getAllCategory";
     public static final String getSubCategory=BaseUrl+"/admin/getSubCategory";

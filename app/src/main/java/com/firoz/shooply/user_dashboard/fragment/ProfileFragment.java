@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.firoz.shooply.R;
 import com.firoz.shooply.user_dashboard.me.activty.HistoryOrderActivity;
 import com.firoz.shooply.user_dashboard.me.activty.PendingOrderActivity;
+import com.firoz.shooply.user_dashboard.me.activty.SettingActivity;
 import com.firoz.shooply.user_dashboard.me.activty.StartedOrderActivity;
 
 import org.json.JSONException;
@@ -78,5 +79,8 @@ public class ProfileFragment extends Fragment {
 
         });
 
+        setting.setOnClickListener(view1 -> {
+            startActivity(new Intent(getContext(), SettingActivity.class));
+        });
     }
 }

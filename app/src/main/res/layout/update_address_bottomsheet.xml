@@ -55,13 +55,6 @@
             android:padding="@dimen/edit_text_padding"
             android:textColor="@color/theam_color" />
 
-        <CheckBox
-            android:id="@+id/useAsDefaultAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Use As Default Address"/>
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addAddress"
             android:layout_width="match_parent"

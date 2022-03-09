@@ -22,6 +22,7 @@ import com.firoz.shooply.R;
 import com.firoz.shooply.checkout.adapter.CartAdapter;
 import com.firoz.shooply.model.CartModel;
 import com.firoz.shooply.model.OrderModel;
+import com.firoz.shooply.user_dashboard.activity.CheckOutActivity;
 import com.firoz.shooply.user_dashboard.activity.SelectAddressActivity;
 import com.firoz.shooply.user_dashboard.helper.CartHelper;
 import com.firoz.shooply.util.CartOnclick;
@@ -75,7 +76,7 @@ public class CartFragment extends Fragment {
         check_out_btn.setOnClickListener(v -> {
             if (cartModelArrayList.size()>0){
                 List<CartModel> selectCartModelList=cartAdapter.getSelectedCart();
-                Intent intent=new Intent(getContext(), SelectAddressActivity.class);
+                Intent intent=new Intent(getContext(), CheckOutActivity.class);
                 intent.putExtra("selectCartModelList",new Gson().toJson(selectCartModelList));
                 startActivity(new Intent(intent));
             }else {

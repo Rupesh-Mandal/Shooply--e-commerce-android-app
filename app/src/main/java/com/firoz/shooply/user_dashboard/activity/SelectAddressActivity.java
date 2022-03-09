@@ -73,58 +73,58 @@ public class SelectAddressActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please Wait");
         address_recycler.setLayoutManager(new GridLayoutManager(this, 1));
-        loadAddress();
+//        loadAddress();
         ad_address_btn.setOnClickListener(v1 -> {
             showAddAddressDailog();
         });
     }
-
-    private void loadAddress() {
-        progressDialog.show();
-        cartHelper.loadAddress(new ResponsListener() {
-            @Override
-            public void onSuccess(String response) {
-                progressDialog.dismiss();
-                Gson gson = new Gson();
-                Type type = new TypeToken<List<AddressBookModel>>() {
-                }.getType();
-                List<AddressBookModel> addressBookModelList = gson.fromJson(response, type);
-                AddressBookAdapter addressBookAdapter = new AddressBookAdapter(SelectAddressActivity.this, addressBookModelList, new AddressBookOnClick() {
-                    @Override
-                    public void onClick(AddressBookModel addressBookModel) {
-                        try {
-                            JSONArray orderArray = new JSONArray();
-                            for (int i = 0; i < selectCartModelList.size(); i++) {
-                                JSONObject jsonObject = new JSONObject(new Gson().toJson(selectCartModelList.get(i)));
-                                jsonObject.put("productDeliverAddress",addressBookModel.getProductDeliverAddress());
-                                jsonObject.put("userPhoneNumber",addressBookModel.getUserPhoneNumber());
-                                jsonObject.put("userName", userName);
-
-                                double r1= Double.parseDouble(selectCartModelList.get(i).getProductRate());
-                                double c1 = Double.parseDouble(selectCartModelList.get(i).getQuantity());
-                                double rate=r1*c1;
-                                jsonObject.put("productTotalRate",String.valueOf(rate));
-
-                                orderArray.put(jsonObject);
-                            }
-                            Intent intent=new Intent(SelectAddressActivity.this,CheckOutActivity.class);
-                            intent.putExtra("orderArray",orderArray.toString());
-                            startActivity(intent);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                address_recycler.setAdapter(addressBookAdapter);
-            }
-
-            @Override
-            public void onError(String error) {
-                progressDialog.dismiss();
-            }
-        });
-    }
+//
+//    private void loadAddress() {
+//        progressDialog.show();
+//        cartHelper.loadAddress(new ResponsListener() {
+//            @Override
+//            public void onSuccess(String response) {
+//                progressDialog.dismiss();
+//                Gson gson = new Gson();
+//                Type type = new TypeToken<List<AddressBookModel>>() {
+//                }.getType();
+//                List<AddressBookModel> addressBookModelList = gson.fromJson(response, type);
+//                AddressBookAdapter addressBookAdapter = new AddressBookAdapter(SelectAddressActivity.this, addressBookModelList, new AddressBookOnClick() {
+//                    @Override
+//                    public void onClick(AddressBookModel addressBookModel) {
+//                        try {
+//                            JSONArray orderArray = new JSONArray();
+//                            for (int i = 0; i < selectCartModelList.size(); i++) {
+//                                JSONObject jsonObject = new JSONObject(new Gson().toJson(selectCartModelList.get(i)));
+//                                jsonObject.put("productDeliverAddress",addressBookModel.getProductDeliverAddress());
+//                                jsonObject.put("userPhoneNumber",addressBookModel.getUserPhoneNumber());
+//                                jsonObject.put("userName", userName);
+//
+//                                double r1= Double.parseDouble(selectCartModelList.get(i).getProductRate());
+//                                double c1 = Double.parseDouble(selectCartModelList.get(i).getQuantity());
+//                                double rate=r1*c1;
+//                                jsonObject.put("productTotalRate",String.valueOf(rate));
+//
+//                                orderArray.put(jsonObject);
+//                            }
+//                            Intent intent=new Intent(SelectAddressActivity.this,CheckOutActivity.class);
+//                            intent.putExtra("orderArray",orderArray.toString());
+//                            startActivity(intent);
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//                address_recycler.setAdapter(addressBookAdapter);
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//                progressDialog.dismiss();
+//            }
+//        });
+//    }
 
     private void showAddAddressDailog() {
         bottomSheetDialog = new BottomSheetDialog(this, R.style.bottom_shee_dailog_theam);

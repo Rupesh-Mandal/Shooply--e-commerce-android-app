@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/drawable/spinner_back.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/sqaure_back.xml" value="0.208" />
         <entry key="app/src/main/res/layout/activity_add_product.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_address_book.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_cart.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_category.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_check_out.xml" value="0.25" />
@@ -35,6 +36,7 @@
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_select_address.xml" value="0.19537624660018132" />
         <entry key="app/src/main/res/layout/activity_seller_dashboard.xml" value="0.17089755213055305" />
+        <entry key="app/src/main/res/layout/activity_setting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_up_select.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_up_seller.xml" value="0.25" />
@@ -72,9 +74,11 @@
         <entry key="app/src/main/res/layout/select_image_bottomsheet.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/seller_order_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/started_order_item.xml" value="0.19537624660018132" />
+        <entry key="app/src/main/res/layout/update_address_bottomsheet.xml" value="0.33" />
         <entry key="app/src/main/res/layout/upload_image_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/user_order_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/user_product_item.xml" value="0.33" />
+        <entry key="app/src/main/res/menu/address_book_menu.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/menu/cart_menu.xml" value="0.19837537409149208" />
         <entry key="app/src/main/res/menu/pending_order_menu.xml" value="0.19837537409149208" />
         <entry key="app/src/main/res/menu/seller_product_option_menu.xml" value="0.19837537409149208" />

@@ -20,6 +20,12 @@
         android:theme="@style/Theme.Shooply"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".user_dashboard.me.activty.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".user_dashboard.activity.AddressBookActivity"
+            android:exported="false" />
+        <activity
             android:name=".user_dashboard.activity.ProductDetailByProductIdActivity"
             android:exported="false" />
         <activity

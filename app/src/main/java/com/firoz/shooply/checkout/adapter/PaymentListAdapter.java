@@ -49,7 +49,7 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
 
         double total=r1*c1;
 
-        double totalWithOutDiscount=r1*c1;
+        double totalWithOutDiscount=m1*c1;
         double discountAmount=totalWithOutDiscount-total;
 
         double d = Double.parseDouble(cartModel.getDiscount());
