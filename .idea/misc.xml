@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/add_address_back.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/bottom_sheet_shap.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/custom_round_checkbox.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/discount_arrow.xml" value="0.2095" />
@@ -49,6 +50,7 @@
         <entry key="app/src/main/res/layout/address_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/cart_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/categories_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/checkout_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/delete_bottomsheet.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/fragment_cart.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_cart_address.xml" value="0.25" />
