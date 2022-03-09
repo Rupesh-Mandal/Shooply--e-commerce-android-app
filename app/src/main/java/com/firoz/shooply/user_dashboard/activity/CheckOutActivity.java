@@ -14,8 +14,11 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +39,7 @@ import com.firoz.shooply.model.CategoriesModel;
 import com.firoz.shooply.user_dashboard.UserDashboardActivity;
 import com.firoz.shooply.user_dashboard.helper.CartHelper;
 import com.firoz.shooply.util.ResponsListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -123,7 +127,9 @@ public class CheckOutActivity extends AppCompatActivity {
         totalMrp = findViewById(R.id.totalMrp);
         editAddress = findViewById(R.id.editAddress);
 
-
+        addAddress.setOnClickListener(view -> {
+            showAddAddressDailog();
+        });
 
         double totalPr = 0;
         double totalMr = 0;
@@ -177,4 +183,80 @@ public class CheckOutActivity extends AppCompatActivity {
 
         });
     }
+
+
+    private void showAddAddressDailog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.bottom_shee_dailog_theam);
+        View v = LayoutInflater.from(this).
+                inflate(R.layout.add_address_bottomsheet, (ConstraintLayout) findViewById(R.id.bottom_sheet_layout));
+        bottomSheetDialog.setContentView(v);
+
+        EditText productDeliverAddress, userPhoneNumber;
+        Button addAddress;
+        CheckBox useAsDefaultAddress=v.findViewById(R.id.useAsDefaultAddress);
+
+        productDeliverAddress = v.findViewById(R.id.productDeliverAddress);
+        userPhoneNumber = v.findViewById(R.id.userPhoneNumber);
+        addAddress = v.findViewById(R.id.addAddress);
+
+        addAddress.setOnClickListener(view1 -> {
+            if (productDeliverAddress.getText().toString().trim().isEmpty()) {
+                productDeliverAddress.setError("Please provide valid address");
+                productDeliverAddress.requestFocus();
+            } else if (userPhoneNumber.getText().toString().trim().isEmpty()) {
+                userPhoneNumber.setError("Please provide valid phone number");
+                userPhoneNumber.requestFocus();
+            } else {
+                progressDialog.show();
+                cartHelper.uploadAddress(productDeliverAddress.getText().toString().trim(), userPhoneNumber.getText().toString().trim(), new ResponsListener() {
+                    @Override
+                    public void onSuccess(String response) {
+                        progressDialog.dismiss();
+                        if (useAsDefaultAddress.isChecked()){
+                            try {
+                                JSONObject jsonObject=new JSONObject(response);
+                                JSONObject addressBookObj=jsonObject.getJSONObject("AddressBookModel");
+                                AddressBookModel addressBookModel = new Gson().fromJson(addressBookObj.toString(), new TypeToken<AddressBookModel>() {}.getType());
+                                setDefaultDeliveryAddress(addressBookModel);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                loadDefaultAddress();
+                            }
+                        }else {
+                            loadDefaultAddress();
+                        }
+
+                        bottomSheetDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        progressDialog.dismiss();
+                    }
+                });
+            }
+        });
+
+
+        bottomSheetDialog.show();
+
+    }
+
+    private void setDefaultDeliveryAddress(AddressBookModel addressBookModel) {
+        progressDialog.show();
+        cartHelper.setDefaultAddress(addressBookModel.getAddressId(), new ResponsListener() {
+            @Override
+            public void onSuccess(String response) {
+                progressDialog.dismiss();
+                loadDefaultAddress();
+            }
+
+            @Override
+            public void onError(String error) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
 }

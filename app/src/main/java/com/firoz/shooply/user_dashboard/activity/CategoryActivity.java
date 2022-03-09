@@ -1,6 +1,6 @@
 package com.firoz.shooply.user_dashboard.activity;
 
-import static com.firoz.shooply.util.Constant.findByProductCategory;
+import static com.firoz.shooply.util.Constant.findByStorecategory;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -31,6 +31,7 @@ import com.firoz.shooply.model.Product;
 import com.firoz.shooply.user_dashboard.UserDashboardActivity;
 import com.firoz.shooply.user_dashboard.adapter.ProductAdapter;
 import com.firoz.shooply.user_dashboard.helper.CartHelper;
+import com.firoz.shooply.user_dashboard.helper.ProductHelper;
 import com.firoz.shooply.util.ResponsListener;
 import com.firoz.shooply.util.UserProductOnClick;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -51,86 +52,68 @@ public class CategoryActivity extends AppCompatActivity {
 
     TextView categoriName;
     RecyclerView categoryRecycler;
-
-    String productCategory;
-    private TextView item_count_in_cart,check_out_btn;
+    ImageView cart;
+    String storecategory;
     ProgressDialog progressDialog;
     CartHelper cartHelper;
+    ProductHelper productHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         categoriName=findViewById(R.id.categoriName);
         categoryRecycler=findViewById(R.id.categoryRecycler);
-        item_count_in_cart=findViewById(R.id.item_count_in_cart);
-        check_out_btn=findViewById(R.id.check_out_btn);
+        cart=findViewById(R.id.cart);
 
+        cart.setOnClickListener(view -> {
+            startActivity(new Intent(this,CartActivity.class));
+        });
+
+        productHelper=new ProductHelper(this);
         cartHelper=new CartHelper(this);
 
-        productCategory=getIntent().getStringExtra("productCategory");
-        categoriName.setText(productCategory);
+        storecategory=getIntent().getStringExtra("storecategory");
+        categoriName.setText(storecategory);
 
         categoryRecycler.setLayoutManager(new GridLayoutManager(this,2));
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Please Wait");
         loadProduct();
-        check_out_btn.setOnClickListener(view -> {
-            startActivity(new Intent(this, UserDashboardActivity.class));
-            finish();
-        });
-        loadCartCount();
+
 
     }
 
     private void loadProduct() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String Url=findByProductCategory;
-        ProgressDialog progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage("Please Waite");
         progressDialog.show();
-
-        StringRequest sr = new StringRequest(Request.Method.POST, Url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("abcd",response);
-                        progressDialog.dismiss();
-                        ArrayList<Product> productArrayList=new Gson().fromJson(response, new TypeToken<List<Product>>() {}.getType());
-                        ProductAdapter productAdapter=new ProductAdapter(CategoryActivity.this, productArrayList, new UserProductOnClick() {
-                            @Override
-                            public void addToCartOnclick(Product product) {
-                                showAddToCartDailog(product);
-                            }
-
-                            @Override
-                            public void onclick(Product product) {
-                                Intent intent=new Intent(CategoryActivity.this,ProductDetailActivity.class);
-                                intent.putExtra("product",new Gson().toJson(product));
-                                startActivity(intent);
-
-                            }
-                        });
-                        categoryRecycler.setAdapter(productAdapter);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("abcd",error.getMessage());
-                        progressDialog.dismiss();
-                        Toast.makeText(CategoryActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                })
-        {
+        productHelper.findByStorecategory(storecategory, new ResponsListener() {
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("productCategory",productCategory);
-                return params;
+            public void onSuccess(String response) {
+                progressDialog.dismiss();
+                ArrayList<Product> productArrayList=new Gson().fromJson(response, new TypeToken<List<Product>>() {}.getType());
+                ProductAdapter productAdapter=new ProductAdapter(CategoryActivity.this, productArrayList, new UserProductOnClick() {
+                    @Override
+                    public void addToCartOnclick(Product product) {
+                        showAddToCartDailog(product);
+                    }
+
+                    @Override
+                    public void onclick(Product product) {
+                        Intent intent=new Intent(CategoryActivity.this,ProductDetailActivity.class);
+                        intent.putExtra("product",new Gson().toJson(product));
+                        startActivity(intent);
+
+                    }
+                });
+                categoryRecycler.setAdapter(productAdapter);
             }
-        };
-        queue.add(sr);
+
+            @Override
+            public void onError(String error) {
+                progressDialog.dismiss();
+
+            }
+        });
+
     }
 
     private void showAddToCartDailog(Product product) {
@@ -180,7 +163,6 @@ public class CategoryActivity extends AppCompatActivity {
             cartHelper.addToCart(product, Integer.parseInt(count.getText().toString()), new ResponsListener() {
                 @Override
                 public void onSuccess(String response) {
-                    loadCartCount();
                     try {
                         JSONObject jsonObject=new JSONObject(response);
                         Toast.makeText(CategoryActivity.this, jsonObject.getString("massage"), Toast.LENGTH_SHORT).show();
@@ -198,27 +180,6 @@ public class CategoryActivity extends AppCompatActivity {
         });
 
         bottomSheetDialog.show();
-    }
-
-    private void loadCartCount() {
-        progressDialog.show();
-        cartHelper.getAllCartList(new ResponsListener() {
-            @Override
-            public void onSuccess(String response) {
-                try {
-                    JSONArray jsonArray=new JSONArray(response);
-                    item_count_in_cart.setText(jsonArray.length()+" Items");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onError(String error) {
-                progressDialog.dismiss();
-            }
-        });
     }
 
 }

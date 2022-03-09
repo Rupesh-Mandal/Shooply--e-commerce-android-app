@@ -46,13 +46,23 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$ "
+                android:fontFamily="@font/krona_one_regular"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                 />
+
+            <TextView
                 android:id="@+id/totalRate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rs.323"
-                android:textColor="@color/theam_color"
+                android:text="323"
+                android:fontFamily="@font/krona_one_regular"
+                android:textColor="@color/black"
                 android:textSize="22sp"
-                android:textStyle="bold" />
+                 />
 
         </LinearLayout>
 
@@ -66,14 +76,15 @@
                 android:layout_height="wrap_content"
                 android:text="Quantity: "
                 android:textColor="@color/black"
-                android:textStyle="bold" />
+                />
 
             <TextView
                 android:id="@+id/productQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textColor="@color/theam_color" />
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 

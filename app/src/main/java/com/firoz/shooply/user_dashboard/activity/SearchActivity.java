@@ -84,7 +84,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
         check_out_btn.setOnClickListener(view -> {
-            startActivity(new Intent(this, UserDashboardActivity.class));
+            startActivity(new Intent(this, CartActivity.class));
             finish();
         });
         loadSearch(q);

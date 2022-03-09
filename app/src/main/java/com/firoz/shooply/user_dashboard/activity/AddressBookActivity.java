@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -78,6 +79,7 @@ public class AddressBookActivity extends AppCompatActivity {
                     @Override
                     public void onDelete(AddressBookModel addressBookModel) {
                         progressDialog.show();
+                        Log.e("abcd",addressBookModel.getAddressId());
                         cartHelper.deleteByAddressId(addressBookModel.getAddressId(), new ResponsListener() {
                             @Override
                             public void onSuccess(String response) {
@@ -99,6 +101,7 @@ public class AddressBookActivity extends AppCompatActivity {
 
                     }
                 });
+                addressBookRecycler.setAdapter(addressBookAdapter);
             }
 
             @Override
@@ -109,6 +112,7 @@ public class AddressBookActivity extends AppCompatActivity {
     }
 
     private void setDefaultDeliveryAddress(AddressBookModel addressBookModel) {
+        progressDialog.show();
         cartHelper.setDefaultAddress(addressBookModel.getAddressId(), new ResponsListener() {
             @Override
             public void onSuccess(String response) {

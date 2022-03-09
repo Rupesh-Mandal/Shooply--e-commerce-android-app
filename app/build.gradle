@@ -53,5 +53,5 @@ dependencies {
     //Room Database
     implementation "androidx.room:room-runtime:2.3.0"
     annotationProcessor "androidx.room:room-compiler:2.3.0"
-
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
 }

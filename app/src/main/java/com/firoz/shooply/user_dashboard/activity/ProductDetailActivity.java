@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +50,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     ProductHelper productHelper;
     CartHelper cartHelper;
     ProgressDialog progressDialog;
+
+
+    SharedPreferences sharedpreferences;
+    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +63,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         cartHelper=new CartHelper(this);
         String object=getIntent().getStringExtra("product");
         productObject=new Gson().fromJson(object,new TypeToken<Product>() {}.getType());
+        sharedpreferences = getSharedPreferences("MyPREFERENCES", MODE_PRIVATE);
+        String userObject = sharedpreferences.getString("authUser", "");
+        try {
+            JSONObject jsonObject = new JSONObject(userObject);
+            userId = jsonObject.getString("userId");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Please Waite");
@@ -102,6 +116,12 @@ public class ProductDetailActivity extends AppCompatActivity {
             intent.putExtra("storeId",productObject.getStoreId());
             startActivity(intent);
         });
+
+        buyNowBtn.setOnClickListener(view -> {
+            showOrderDailog(productObject);
+
+        });
+
     }
 
     private void loadStorecategory() {
@@ -236,4 +256,71 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         bottomSheetDialog.show();
     }
+
+
+    private void showOrderDailog(Product product) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ProductDetailActivity.this, R.style.bottom_shee_dailog_theam);
+        View v = LayoutInflater.from(ProductDetailActivity.this).
+                inflate(R.layout.order_bottomsheet, (ConstraintLayout) findViewById(R.id.bottom_sheet_layout));
+        bottomSheetDialog.setContentView(v);
+
+        ImageView imageView = v.findViewById(R.id.img);
+        TextView count_negative,count_positive;
+        TextView  count ,item_name,item_rate;
+        AppCompatButton order;
+
+        count_negative = v.findViewById(R.id.count_negative);
+        count = v.findViewById(R.id.count);
+        count_positive = v.findViewById(R.id.count_positive);
+        item_name = v.findViewById(R.id.item_name);
+        item_rate = v.findViewById(R.id.item_rate);
+        order = v.findViewById(R.id.order);
+
+        item_name.setText(product.getProductName());
+        item_rate.setText(product.getProductRate());
+        Glide.with(this).load(product.getProductImageLink()).into(imageView);
+
+        count_negative.setOnClickListener(view1 -> {
+
+            double r= Double.parseDouble(product.getProductRate());
+            int c = Integer.parseInt(count.getText().toString());
+
+            if (c>1){
+                int i=c-1;
+                count.setText(String.valueOf(i));
+                item_rate.setText(String.valueOf((c-1)*r));
+            }
+        });
+        count_positive.setOnClickListener(view1 -> {
+
+            double r= Double.parseDouble(product.getProductRate());
+            int c = Integer.parseInt(count.getText().toString());
+            int i=c+1;
+
+            count.setText(String.valueOf(i));
+            item_rate.setText(String.valueOf((c+1)*r));
+
+        });
+        order.setOnClickListener(view -> {
+            JSONObject jsonBody = null;
+            try {
+                jsonBody = new JSONObject(new Gson().toJson(product));
+                jsonBody.put("quantity",count.getText().toString());
+                jsonBody.put("userId", userId);
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.put(jsonBody);
+
+                final String mRequestBody = jsonArray.toString();
+                Intent intent=new Intent(ProductDetailActivity.this, CheckOutActivity.class);
+                intent.putExtra("selectCartModelList",mRequestBody);
+                startActivity(new Intent(intent));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        bottomSheetDialog.show();
+    }
+
 }

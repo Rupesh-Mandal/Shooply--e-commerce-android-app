@@ -214,9 +214,7 @@ public class CartHelper {
     public void uploadAddress(String productDeliverAddress, String userPhoneNumber, ResponsListener responsListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String Url = addAddress;
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Please Waite");
-        progressDialog.show();
+
 
         StringRequest sr = new StringRequest(Request.Method.POST, Url,
                 new Response.Listener<String>() {
@@ -248,9 +246,6 @@ public class CartHelper {
     public void deleteByAddressId(String addressId, ResponsListener responsListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String Url = deleteByAddressId;
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Please Waite");
-        progressDialog.show();
 
         StringRequest sr = new StringRequest(Request.Method.POST, Url,
                 new Response.Listener<String>() {
@@ -280,9 +275,6 @@ public class CartHelper {
     public void setDefaultAddress(String addressId, ResponsListener responsListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String Url = setDefaultAddress;
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Please Waite");
-        progressDialog.show();
 
         StringRequest sr = new StringRequest(Request.Method.POST, Url,
                 new Response.Listener<String>() {

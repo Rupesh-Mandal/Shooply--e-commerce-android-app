@@ -1,7 +1,7 @@
 package com.firoz.shooply.util;
 
 public class Constant {
-    public static final String  BaseUrl="http://192.168.1.67:8080/api/v1";
+    public static final String  BaseUrl="http://139.59.46.233/api/v1";
     public static final String LogIn=BaseUrl+"/auth/sign_in";
     public static final String SignUp=BaseUrl+"/auth/sign_up";
     public static final String getStoreByStoreId=BaseUrl+"/store/getStoreByStoreId";
@@ -18,10 +18,9 @@ public class Constant {
     public static final String updateProduct=BaseUrl+"/product/updateProduct";
     public static final String getAllProductSeller=BaseUrl+"/product/getAllProductSeller";
     public static final String findByProductId=BaseUrl+"/product/findByProductId";
-    public static final String findByStorecategory=BaseUrl+"/product/findByStorecategory";
     public static final String deletProduct=BaseUrl+"/product/deletProduct";
     public static final String loadSearch=BaseUrl+"/product/loadSearch";
-    public static final String findByProductCategory=BaseUrl+"/product/findByProductCategory";
+    public static final String findByStorecategory=BaseUrl+"/product/findByStorecategory";
     public static final String getAllProductUser=BaseUrl+"/product/getAllProductUser";
 
     public static final String getAddressByUserId=BaseUrl+"/addressBook/getAddressByUserId";

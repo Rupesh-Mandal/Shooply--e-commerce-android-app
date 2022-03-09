@@ -126,4 +126,34 @@ public class ProductHelper {
     }
 
 
+
+    public void findByStorecategory(String storecategory, ResponsListener responsListener){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String Url = findByStorecategory;
+        StringRequest sr = new StringRequest(Request.Method.POST, Url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("abcd", response);
+                        responsListener.onSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("abcd", error.getMessage());
+                        responsListener.onError(error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("storecategory", storecategory);
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
+
+
 }
