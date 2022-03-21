@@ -20,6 +20,15 @@
         android:theme="@style/Theme.Shooply"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".seller_dashboard.activity.SellerHistoryOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".seller_dashboard.activity.SellerStartedOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".seller_dashboard.activity.SellerPendingOrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".user_dashboard.activity.CartActivity"
             android:exported="false" />
         <activity

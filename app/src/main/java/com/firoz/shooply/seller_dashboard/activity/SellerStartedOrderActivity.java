@@ -1,28 +1,21 @@
-package com.firoz.shooply.seller_dashboard.fragment;
-
-import android.app.ProgressDialog;
+package com.firoz.shooply.seller_dashboard.activity;
 
 import static com.firoz.shooply.seller_dashboard.SellerDashboardActivity.authUserForSeller;
 import static com.firoz.shooply.util.Constant.acceptOrder;
 import static com.firoz.shooply.util.Constant.cancelOrderBySeller;
 import static com.firoz.shooply.util.Constant.deliverdFaildOrder;
-import static com.firoz.shooply.util.Constant.getOrderAsSeller;
 import static com.firoz.shooply.util.Constant.getSellerPendingOrder;
+import static com.firoz.shooply.util.Constant.getSellerStartedOrder;
 import static com.firoz.shooply.util.Constant.onDeliveryStarted;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -37,12 +30,10 @@ import com.firoz.shooply.R;
 import com.firoz.shooply.auth.model.AuthUser;
 import com.firoz.shooply.model.OrderModel;
 import com.firoz.shooply.seller_dashboard.adapter.SellerOrderAdapter;
-import com.firoz.shooply.seller_dashboard.adapter.SellerProductAdapter;
 import com.firoz.shooply.util.OrderOnclick;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,10 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class SellerOrdersFragment extends Fragment {
-
-    View view;
+public class SellerStartedOrderActivity extends AppCompatActivity {
     ArrayList<OrderModel> orderModelArrayList;
     RecyclerView orderRecycler;
 
@@ -68,37 +56,25 @@ public class SellerOrdersFragment extends Fragment {
 
     GridLayoutManager gridLayoutManager;
     SellerOrderAdapter sellerOrderAdapter;
-    public SellerOrdersFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_seller_orders, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(v, savedInstanceState);
-        view = v;
-        sharedpreferences = getContext().getSharedPreferences("MyPREFERENCES", getContext().MODE_PRIVATE);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_seller_started_order);
+        sharedpreferences = getSharedPreferences("MyPREFERENCES", MODE_PRIVATE);
         String object = sharedpreferences.getString("authUser", "");
         authUserForSeller = new Gson().fromJson(object, new TypeToken<AuthUser>() {
         }.getType());
         initView();
-
     }
 
     private void initView() {
         orderModelArrayList = new ArrayList<>();
-        orderRecycler = view.findViewById(R.id.orderRecycler);
-        gridLayoutManager = new GridLayoutManager(getContext(), 1);
+        orderRecycler = findViewById(R.id.orderRecycler);
+        gridLayoutManager = new GridLayoutManager(SellerStartedOrderActivity.this, 1);
         orderRecycler.setLayoutManager(gridLayoutManager);
         setOrder();
 
-        progressDialog = new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(SellerStartedOrderActivity.this);
         progressDialog.setMessage("Please Wait");
 
         loadOrder();
@@ -129,8 +105,8 @@ public class SellerOrdersFragment extends Fragment {
         progressDialog.show();
         loading = false;
 
-        String url = getSellerPendingOrder;
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url = getSellerStartedOrder;
+        RequestQueue queue = Volley.newRequestQueue(SellerStartedOrderActivity.this);
 
         StringRequest sr = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -151,7 +127,7 @@ public class SellerOrdersFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         Log.e("abcd", error.getMessage());
                         progressDialog.dismiss();
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SellerStartedOrderActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                         loading = true;
 
                     }
@@ -172,7 +148,7 @@ public class SellerOrdersFragment extends Fragment {
 
     private void setOrder() {
 
-        sellerOrderAdapter = new SellerOrderAdapter(getContext(), orderModelArrayList, new OrderOnclick() {
+        sellerOrderAdapter = new SellerOrderAdapter(SellerStartedOrderActivity.this, orderModelArrayList, new OrderOnclick() {
 
             @Override
             public void onDeliveryStarted(OrderModel orderModel) {
@@ -203,7 +179,7 @@ public class SellerOrdersFragment extends Fragment {
         String URL = url;
 
         final String mRequestBody = new Gson().toJson(orderModel);
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(SellerStartedOrderActivity.this);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
@@ -213,17 +189,17 @@ public class SellerOrdersFragment extends Fragment {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getBoolean("status")) {
-                        Toast.makeText(getContext(), jsonObject.getString("messag"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SellerStartedOrderActivity.this, jsonObject.getString("messag"), Toast.LENGTH_SHORT).show();
                         pageNumber=0;
                         orderModelArrayList.clear();
                         loadOrder();
                     } else {
-                        Toast.makeText(getContext(), jsonObject.getString("messag"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SellerStartedOrderActivity.this, jsonObject.getString("messag"), Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getContext(), "Something went wrong " + e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellerStartedOrderActivity.this, "Something went wrong " + e.toString(), Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -234,7 +210,7 @@ public class SellerOrdersFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
                 Log.e("abcd", error.toString());
-                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SellerStartedOrderActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

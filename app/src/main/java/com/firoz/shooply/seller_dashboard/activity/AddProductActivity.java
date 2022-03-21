@@ -47,6 +47,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.firoz.shooply.R;
 import com.firoz.shooply.auth.model.AuthUser;
+import com.firoz.shooply.seller_dashboard.helper.SellerHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -78,8 +79,6 @@ public class AddProductActivity extends AppCompatActivity {
     private final int cameraPermisionFor = 73;
 
     ImageView product_photo;
-    AuthUser authUserForSeller;
-    SharedPreferences sharedpreferences;
 
     TextInputEditText productName, productDescription, productRate, productDeliverCharge,mrp;
 
@@ -90,21 +89,17 @@ public class AddProductActivity extends AppCompatActivity {
 
     JSONArray storeCategoryList;
 
-    SharedPreferences sharedPreferences;
     ProgressDialog progressDialog;
-    private StorageReference storageReference;
 
     AutoCompleteTextView subCategory;
 
+    SellerHelper sellerHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
-        sharedpreferences = getSharedPreferences("MyPREFERENCES", MODE_PRIVATE);
-        String object=sharedpreferences.getString("authUser","");
-        authUserForSeller=new Gson().fromJson(object, new TypeToken<AuthUser>() {}.getType());
-        storageReference = FirebaseStorage.getInstance().getReference();
 
+        sellerHelper=new SellerHelper(this);
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Please Wait");
 
@@ -127,7 +122,33 @@ public class AddProductActivity extends AppCompatActivity {
 
         upload_product.setOnClickListener(view -> {
             if (isValid()) {
-                uploadImage();
+
+                try {
+                    JSONObject productObject=new JSONObject();
+
+                    productObject.put("storeName",productName.getText().toString().trim());
+                    productObject.put("productName",productName.getText().toString().trim());
+                    productObject.put("productDescription",productDescription.getText().toString().trim());
+                    productObject.put("productRate",productRate.getText().toString());
+                    productObject.put("mrp",mrp.getText().toString());
+
+                    double r=Double.parseDouble(productRate.getText().toString().trim());
+                    double m=Double.parseDouble(mrp.getText().toString().trim());
+                    double d=m-r;
+
+                    double discount=(d/m)*100;
+
+                    productObject.put("discount",String.valueOf(discount));
+
+                    productObject.put("storecategory",category.getSelectedItem().toString().trim());
+                    productObject.put("sub_category",subCategory.getText().toString().trim());
+                    productObject.put("storeCategoryId",storeCategoryList.getJSONObject(category.getSelectedItemPosition()).getString("storeCategoryId"));
+                    sellerHelper.uploadImage(((BitmapDrawable) product_photo.getDrawable()).getBitmap(),productObject);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         product_photo.setOnClickListener(view -> {
@@ -265,132 +286,6 @@ public class AddProductActivity extends AppCompatActivity {
 
         bottomSheetDialog.show();
     }
-
-    private void uploadProduct(String imageDownloadUri) throws JSONException {
-        progressDialog.show();
-
-        String URL=addProduct;
-        JSONObject productObject=new JSONObject();
-
-        productObject.put("storeId",authUserForSeller.getUserId());
-        productObject.put("storeName",productName.getText().toString().trim());
-        productObject.put("storeEmail",authUserForSeller.getEmail());
-        productObject.put("productName",productName.getText().toString().trim());
-        productObject.put("productDescription",productDescription.getText().toString().trim());
-        productObject.put("productRate",productRate.getText().toString());
-        productObject.put("mrp",mrp.getText().toString());
-
-        double r=Double.parseDouble(productRate.getText().toString().trim());
-        double m=Double.parseDouble(mrp.getText().toString().trim());
-        double d=m-r;
-
-        double discount=(d/m)*100;
-
-        productObject.put("discount",String.valueOf(discount));
-
-        productObject.put("productImageLink",imageDownloadUri);
-        productObject.put("storecategory",category.getSelectedItem().toString().trim());
-        productObject.put("sub_category",subCategory.getText().toString().trim());
-        productObject.put("storeCategoryId",storeCategoryList.getJSONObject(category.getSelectedItemPosition()).getString("storeCategoryId"));
-
-        final String mRequestBody = productObject.toString();
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                progressDialog.dismiss();
-                JSONObject jsonObject;
-                try {
-                    jsonObject = new JSONObject(response);
-                    if (jsonObject.getBoolean("status")) {
-                        Toast.makeText(AddProductActivity.this, jsonObject.getString("messag"), Toast.LENGTH_SHORT).show();
-                        setResult(2);
-                        finish();
-                    } else {
-                        Toast.makeText(AddProductActivity.this, jsonObject.getString("messag"), Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(AddProductActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                    Log.e("abcd",e.toString());
-
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                Log.e("abcd", error.toString());
-                Toast.makeText(AddProductActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-
-        requestQueue.add(stringRequest);
-
-    }
-
-    private void uploadImage() {
-        progressDialog.show();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = ((BitmapDrawable) product_photo.getDrawable()).getBitmap();
-
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte[] finalimage = baos.toByteArray();
-        final StorageReference filepath;
-        filepath = storageReference.child("product").child(finalimage+".jpg");
-        final UploadTask uploadTask = filepath.putBytes(finalimage);
-        uploadTask.addOnCompleteListener(AddProductActivity.this, new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if (task.isSuccessful()){
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    progressDialog.dismiss();
-                                    String imageDownloadUri = String.valueOf(uri);
-                                    Log.e("abcd",imageDownloadUri);
-                                    try {
-                                        uploadProduct(imageDownloadUri);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        Toast.makeText(AddProductActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                                        Log.e("abcd",e.toString());
-                                    }
-
-                                }
-                            });
-                        }
-                    });
-                }else{
-                    progressDialog.dismiss();
-                    Toast.makeText(AddProductActivity.this, "Something went worng", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
-
 
 
     public void pickFromCamera() {

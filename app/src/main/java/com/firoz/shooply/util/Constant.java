@@ -2,10 +2,10 @@ package com.firoz.shooply.util;
 
 public class Constant {
     // Live url
-//    public static final String  BaseUrl="http://139.59.46.233/api/v1";
+    public static final String  BaseUrl="http://139.59.46.233/api/v1";
 
      // Local url
-    public static final String  BaseUrl="http://192.168.10.70:8080/api/v1";
+//    public static final String  BaseUrl="http://192.168.10.70:8080/api/v1";
 
 
     public static final String LogIn=BaseUrl+"/auth/sign_in";
@@ -49,6 +49,10 @@ public class Constant {
     public static final String getStartedOrder=BaseUrl+"/order/getStartedOrder";
     public static final String getPendingOrder=BaseUrl+"/order/getPendingOrder";
     public static final String cancelOrderByUser=BaseUrl+"/order/cancelOrderByUser";
+
+    public static final String getSellerPendingOrder=BaseUrl+"/order/getSellerPendingOrder";
+    public static final String getSellerStartedOrder=BaseUrl+"/order/getSellerStartedOrder";
+    public static final String getSellerOrderHistory=BaseUrl+"/order/getSellerOrderHistory";
 
 
 

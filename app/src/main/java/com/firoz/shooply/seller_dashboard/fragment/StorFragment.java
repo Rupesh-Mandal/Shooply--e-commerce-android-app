@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -28,14 +29,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.firoz.shooply.R;
-import com.firoz.shooply.auth.SignInActivity;
-import com.firoz.shooply.auth.model.AuthUser;
-import com.firoz.shooply.auth.model.UserType;
-import com.firoz.shooply.seller_dashboard.SellerDashboardActivity;
+
+import com.firoz.shooply.seller_dashboard.activity.SellerHistoryOrderActivity;
+import com.firoz.shooply.seller_dashboard.activity.SellerPendingOrderActivity;
+import com.firoz.shooply.seller_dashboard.activity.SellerStartedOrderActivity;
 import com.firoz.shooply.seller_dashboard.activity.UpdateStoreActivity;
-import com.firoz.shooply.user_dashboard.UserDashboardActivity;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +46,7 @@ public class StorFragment extends Fragment {
 
     LinearLayout setting,privacy_policy,about_us;
     View view;
+    CardView pending,started,history;
 
     ImageView storeArtImage,storeLogoImage,editBtn;
     TextView storeName,storeSlogan,storeDescription,storeEmail;
@@ -85,11 +84,29 @@ public class StorFragment extends Fragment {
         storeEmail=view.findViewById(R.id.storeEmail);
         editBtn=view.findViewById(R.id.editBtn);
 
+        pending=view.findViewById(R.id.pending);
+        started=view.findViewById(R.id.started);
+        history=view.findViewById(R.id.history);
+
         editBtn.setOnClickListener(view1 -> {
             Intent intent=new Intent(getContext(), UpdateStoreActivity.class);
             intent.putExtra("StoreModel",jsonObject.toString());
             startActivity(intent);
         });
+
+
+        pending.setOnClickListener(view1 -> {
+            startActivity(new Intent(getContext(), SellerPendingOrderActivity.class));
+        });
+        started.setOnClickListener(view1 -> {
+            startActivity(new Intent(getContext(), SellerStartedOrderActivity.class));
+
+        });
+        history.setOnClickListener(view1 -> {
+            startActivity(new Intent(getContext(), SellerHistoryOrderActivity.class));
+
+        });
+
 
         loadStoreData();
     }

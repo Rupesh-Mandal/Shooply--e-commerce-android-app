@@ -42,6 +42,7 @@ import com.firoz.shooply.model.Product;
 import com.firoz.shooply.seller_dashboard.activity.AddProductActivity;
 import com.firoz.shooply.seller_dashboard.activity.UpdateActivity;
 import com.firoz.shooply.seller_dashboard.adapter.SellerProductAdapter;
+import com.firoz.shooply.user_dashboard.me.adapter.OrderHistoryAdapter;
 import com.firoz.shooply.util.ProductOnclick;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
@@ -66,12 +67,20 @@ public class ProductsFragment extends Fragment {
     private static ProgressDialog progressDialog;
     SharedPreferences sharedpreferences;
 
-    private static ArrayList<Product> productArrayList = new ArrayList<>();
+    private static ArrayList<Product> productArrayList;
 
     public static Context context;
+
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private static boolean loading = true;
+    static int pageNumber=0;
+    static SellerProductAdapter sellerProductAdapter;
+
+    GridLayoutManager gridLayoutManager;
     public ProductsFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,31 +93,60 @@ public class ProductsFragment extends Fragment {
         super.onViewCreated(v, savedInstanceState);
         view = v;
         sharedpreferences = getContext().getSharedPreferences("MyPREFERENCES", getContext().MODE_PRIVATE);
-        String object=sharedpreferences.getString("authUser","");
-        authUserForSeller=new Gson().fromJson(object, new TypeToken<AuthUser>() {}.getType());
-        context=getContext();
+        String object = sharedpreferences.getString("authUser", "");
+        authUserForSeller = new Gson().fromJson(object, new TypeToken<AuthUser>() {
+        }.getType());
+        context = getContext();
         initView();
     }
 
     private void initView() {
+
+        productArrayList = new ArrayList<>();
         all_product_list = view.findViewById(R.id.all_product_list);
+        gridLayoutManager=new GridLayoutManager(getContext(),1);
+        all_product_list.setLayoutManager(gridLayoutManager);
+
         add_product = view.findViewById(R.id.add_product);
 
-        all_product_list.setLayoutManager(new GridLayoutManager(getContext(),1));
 
         add_product.setOnClickListener(view1 -> {
-            Intent intent=new Intent(getContext(), AddProductActivity.class);
-            getActivity().startActivityForResult(intent,2);
+            Intent intent = new Intent(getContext(), AddProductActivity.class);
+            getActivity().startActivityForResult(intent, 2);
         });
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Please Wait");
 
+        setProdduct(getActivity());
+
         loadProduct(getActivity());
+
+        all_product_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                Log.e("abcd",dx +""+dy);
+                if (dy > 0) { //check for scroll down
+                    visibleItemCount = gridLayoutManager.getChildCount();
+                    totalItemCount = gridLayoutManager.getItemCount();
+                    pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            Log.v("...", "Last Item Wow !");
+                            // Do pagination.. i.e. fetch new data
+                            loadProduct(getActivity());
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public static void loadProduct(Activity activity) {
-        progressDialog.show();
+        loading = false;
+
         String Url = getAllProductSeller;
         RequestQueue queue = Volley.newRequestQueue(activity);
 
@@ -118,46 +156,45 @@ public class ProductsFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("abcd",response);
+                        Log.e("abcd", response);
                         progressDialog.dismiss();
-                        try {
-                            JSONArray jsonArray=new JSONArray(response);
-                            Log.e("abcd",jsonArray.toString());
-                            productArrayList = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Product>>() {}.getType());
-                            setProdduct(activity);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                        productArrayList.addAll( new Gson().fromJson(response, new TypeToken<List<Product>>() {}.getType()));
+                        sellerProductAdapter.notifyDataSetChanged();
+                        pageNumber++;
+                        loading = true;
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("abcd",error.getMessage());
+                        Log.e("abcd", error.getMessage());
                         progressDialog.dismiss();
                         Toast.makeText(activity, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        loading = true;
 
                     }
-                })
-        {
+                }) {
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("storeId",authUserForSeller.getUserId());
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("storeId", authUserForSeller.getUserId());
+                params.put("page", String.valueOf(pageNumber));
+                params.put("pageSize", "10");
+                params.put("sort", "DESC");
+                params.put("sortBy", "createdTime");
                 return params;
             }
         };
         queue.add(sr);
     }
 
-    private static void setProdduct(Activity activity) {
-        SellerProductAdapter sellerProductAdapter =new SellerProductAdapter(activity, productArrayList, new ProductOnclick() {
+    private void setProdduct(Activity activity) {
+        sellerProductAdapter = new SellerProductAdapter(activity, productArrayList, new ProductOnclick() {
             @Override
             public void onEdit(Product product) {
-                Intent intent=new Intent(activity, UpdateActivity.class);
-                intent.putExtra("product",new Gson().toJson(product));
-                activity.startActivityForResult(intent,2);
+                Intent intent = new Intent(activity, UpdateActivity.class);
+                intent.putExtra("product", new Gson().toJson(product));
+                activity.startActivityForResult(intent, 2);
 
             }
 
@@ -173,8 +210,8 @@ public class ProductsFragment extends Fragment {
                 TextView productDescription = v.findViewById(R.id.productDescription);
                 TextView productRate = v.findViewById(R.id.productRate);
 
-                Button cancelBtn=v.findViewById(R.id.cancelBtn);
-                Button deletBtn=v.findViewById(R.id.deletBtn);
+                Button cancelBtn = v.findViewById(R.id.cancelBtn);
+                Button deletBtn = v.findViewById(R.id.deletBtn);
 
                 Glide.with(context).load(product.getProductImageLink()).into(productImageLink);
 
@@ -186,7 +223,7 @@ public class ProductsFragment extends Fragment {
                     bottomSheetDialog.dismiss();
                 });
                 deletBtn.setOnClickListener(view1 -> {
-                    deletProduct(new Gson().toJson(product),activity);
+                    deletProduct(new Gson().toJson(product), activity);
                     bottomSheetDialog.dismiss();
                 });
 
@@ -197,11 +234,11 @@ public class ProductsFragment extends Fragment {
         all_product_list.setAdapter(sellerProductAdapter);
     }
 
-    private static void deletProduct(String object,Activity activity) {
+    private static void deletProduct(String object, Activity activity) {
         progressDialog.show();
         final String mRequestBody = object;
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
-        String URL=deletProduct;
+        String URL = deletProduct;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
@@ -209,11 +246,11 @@ public class ProductsFragment extends Fragment {
                 progressDialog.dismiss();
                 JSONObject jsonObject;
                 try {
-                    jsonObject=new JSONObject(response);
-                    if (jsonObject.getBoolean("status")){
+                    jsonObject = new JSONObject(response);
+                    if (jsonObject.getBoolean("status")) {
                         Toast.makeText(activity, jsonObject.getString("messag"), Toast.LENGTH_SHORT).show();
 
-                    }else {
+                    } else {
                         Toast.makeText(activity, jsonObject.getString("messag"), Toast.LENGTH_SHORT).show();
                     }
                     loadProduct(activity);
@@ -225,7 +262,7 @@ public class ProductsFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Log.e("abcd",error.toString());
+                Log.e("abcd", error.toString());
                 Toast.makeText(activity, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
