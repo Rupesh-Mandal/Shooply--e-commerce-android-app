@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:singleLine="true"
             android:text="Chicken Biriyani"
             android:textColor="@color/black"
@@ -88,14 +88,16 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/menu"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:padding="5dp"
-        android:src="@drawable/three_dots"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deletBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Delete"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/delet_back"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout8"
@@ -118,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$ "
-                android:textColor="@color/theam_color"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <TextView
@@ -127,7 +129,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto_light"
                 android:text="323"
-                android:textColor="@color/theam_color"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
         </LinearLayout>

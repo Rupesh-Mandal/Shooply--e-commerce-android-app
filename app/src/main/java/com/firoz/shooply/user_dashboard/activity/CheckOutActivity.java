@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,11 +57,11 @@ public class CheckOutActivity extends AppCompatActivity {
 
     ConstraintLayout addressLayout;
     RecyclerView payment_recyclerView;
-    Button cash_on_delivery;
+    Button proccedToPay;
     ProgressDialog progressDialog;
     List<CartModel> selectCartModelList = new ArrayList<>();
 
-    TextView productDeliverAddress, userPhoneNumber, addAddress, total, totalMrp;
+    TextView productDeliverAddress, productDeliverInstruction,userPhoneNumber, addAddress, total, totalMrp;
     ImageView editAddress;
     CartHelper cartHelper;
     AddressBookModel addressBookModel;
@@ -103,6 +105,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
                         productDeliverAddress.setText(addressBookModel.getProductDeliverAddress());
                         userPhoneNumber.setText(addressBookModel.getUserPhoneNumber());
+                        productDeliverInstruction.setText(addressBookModel.getProductDeliverInstruction());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -119,9 +122,10 @@ public class CheckOutActivity extends AppCompatActivity {
     private void initView() {
         addressLayout = findViewById(R.id.addressLayout);
         payment_recyclerView = findViewById(R.id.payment_recyclerView);
-        cash_on_delivery = findViewById(R.id.cash_on_delivery);
+        proccedToPay = findViewById(R.id.proccedToPay);
         productDeliverAddress = findViewById(R.id.productDeliverAddress);
         userPhoneNumber = findViewById(R.id.userPhoneNumber);
+        productDeliverInstruction = findViewById(R.id.productDeliverInstruction);
         addAddress = findViewById(R.id.addAddress);
         total = findViewById(R.id.total);
         totalMrp = findViewById(R.id.totalMrp);
@@ -147,41 +151,70 @@ public class CheckOutActivity extends AppCompatActivity {
         total.setText(String.valueOf(totalPr));
         totalMrp.setText(String.valueOf(totalMr));
 
-        cash_on_delivery.setOnClickListener(view -> {
+        proccedToPay.setOnClickListener(view -> {
             if (addressLayout.getVisibility() == View.VISIBLE) {
-                progressDialog.show();
-                cartHelper.addOrder(selectCartModelList,addressBookModel, new ResponsListener() {
-                    @Override
-                    public void onSuccess(String response) {
-                        progressDialog.dismiss();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.getBoolean("status")) {
-                                Intent intent = new Intent(CheckOutActivity.this, UserDashboardActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                Toast.makeText(CheckOutActivity.this, jsonObject.getString("massage"), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(CheckOutActivity.this, jsonObject.getString("massage"), Toast.LENGTH_SHORT).show();
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(CheckOutActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        progressDialog.dismiss();
-                    }
-                });
+                showPaymentDailog();
             } else {
                 Toast.makeText(this, "Please Add Delivery Address", Toast.LENGTH_SHORT).show();
             }
 
         });
+    }
+
+    private void startOrder(String deliveryType){
+        progressDialog.show();
+        cartHelper.addOrder(selectCartModelList,addressBookModel,deliveryType, new ResponsListener() {
+            @Override
+            public void onSuccess(String response) {
+                progressDialog.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getBoolean("status")) {
+                        Intent intent = new Intent(CheckOutActivity.this, UserDashboardActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        Toast.makeText(CheckOutActivity.this, jsonObject.getString("massage"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(CheckOutActivity.this, jsonObject.getString("massage"), Toast.LENGTH_SHORT).show();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(CheckOutActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onError(String error) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void showPaymentDailog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.bottom_shee_dailog_theam);
+        View v = LayoutInflater.from(this).
+                inflate(R.layout.procced_to_pay_dailog, (ConstraintLayout) findViewById(R.id.bottom_sheet_layout));
+        bottomSheetDialog.setContentView(v);
+
+        RadioGroup paymentRadioGroup=v.findViewById(R.id.paymentRadioGroup);
+        RadioButton cashODeliver=v.findViewById(R.id.cashODeliver);
+        RadioButton storePickup=v.findViewById(R.id.storePickup);
+
+        Button completeOrder=v.findViewById(R.id.completeOrder);
+
+        completeOrder.setOnClickListener(view -> {
+            if (cashODeliver.isChecked()){
+                startOrder("Cash On Delivery");
+            }else {
+                startOrder("Store Pickup");
+
+            }
+        });
+
+        bottomSheetDialog.show();
+
     }
 
 
@@ -191,11 +224,12 @@ public class CheckOutActivity extends AppCompatActivity {
                 inflate(R.layout.add_address_bottomsheet, (ConstraintLayout) findViewById(R.id.bottom_sheet_layout));
         bottomSheetDialog.setContentView(v);
 
-        EditText productDeliverAddress, userPhoneNumber;
+        EditText productDeliverAddress,productDeliverInstruction, userPhoneNumber;
         Button addAddress;
         CheckBox useAsDefaultAddress=v.findViewById(R.id.useAsDefaultAddress);
 
         productDeliverAddress = v.findViewById(R.id.productDeliverAddress);
+        productDeliverInstruction = v.findViewById(R.id.productDeliverInstruction);
         userPhoneNumber = v.findViewById(R.id.userPhoneNumber);
         addAddress = v.findViewById(R.id.addAddress);
 
@@ -203,12 +237,16 @@ public class CheckOutActivity extends AppCompatActivity {
             if (productDeliverAddress.getText().toString().trim().isEmpty()) {
                 productDeliverAddress.setError("Please provide valid address");
                 productDeliverAddress.requestFocus();
+            } else if (productDeliverInstruction.getText().toString().trim().isEmpty()) {
+                productDeliverInstruction.setError("Please Provide Deliver Instruction");
+                productDeliverInstruction.requestFocus();
+
             } else if (userPhoneNumber.getText().toString().trim().isEmpty()) {
                 userPhoneNumber.setError("Please provide valid phone number");
                 userPhoneNumber.requestFocus();
             } else {
                 progressDialog.show();
-                cartHelper.uploadAddress(productDeliverAddress.getText().toString().trim(), userPhoneNumber.getText().toString().trim(), new ResponsListener() {
+                cartHelper.uploadAddress(productDeliverAddress.getText().toString().trim(), productDeliverInstruction.getText().toString().trim(), userPhoneNumber.getText().toString().trim(), new ResponsListener() {
                     @Override
                     public void onSuccess(String response) {
                         progressDialog.dismiss();

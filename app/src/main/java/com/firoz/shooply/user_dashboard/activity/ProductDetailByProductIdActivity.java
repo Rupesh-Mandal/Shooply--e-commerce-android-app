@@ -40,10 +40,10 @@ import java.util.List;
 
 public class ProductDetailByProductIdActivity extends AppCompatActivity {
     Product productObject;
-    ImageView productImageLink,storeBtn;
+    ImageView productImageLink;
     TextView productRate,mrp,discount,productName,productDescription;
     RecyclerView recommendedByStoreRecycler,storecategoryRecycler;
-    Button buyNowBtn,addToCartBtn;
+    Button storeBtn,addToCartBtn;
 
     ProductHelper productHelper;
     CartHelper cartHelper;
@@ -98,7 +98,6 @@ public class ProductDetailByProductIdActivity extends AppCompatActivity {
         productDescription=findViewById(R.id.productDescription);
         recommendedByStoreRecycler=findViewById(R.id.recommendedByStoreRecycler);
         storecategoryRecycler=findViewById(R.id.storecategoryRecycler);
-        buyNowBtn=findViewById(R.id.buyNowBtn);
         addToCartBtn=findViewById(R.id.addToCartBtn);
 
         Glide.with(this).load(productObject.getProductImageLink()).into(productImageLink);
@@ -120,11 +119,6 @@ public class ProductDetailByProductIdActivity extends AppCompatActivity {
 
         addToCartBtn.setOnClickListener(view -> {
             showAddToCartDailog(productObject);
-        });
-
-        buyNowBtn.setOnClickListener(view -> {
-            showOrderDailog(productObject);
-
         });
 
         storeBtn.setOnClickListener(view -> {

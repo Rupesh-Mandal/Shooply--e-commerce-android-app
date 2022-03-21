@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/bg_overlay.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/bottom_sheet_shap.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/custom_round_checkbox.xml" value="0.2095" />
+        <entry key="app/src/main/res/drawable/delet_back.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/discount_arrow.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/ic_baseline_camera_alt_24.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1945" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/drawable/round.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/round2.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/search_back.xml" value="0.1945" />
+        <entry key="app/src/main/res/drawable/search_back2.xml" value="0.2095" />
         <entry key="app/src/main/res/drawable/spinner_back.xml" value="0.1945" />
         <entry key="app/src/main/res/drawable/sqaure_back.xml" value="0.208" />
         <entry key="app/src/main/res/layout/activity_add_product.xml" value="0.25" />
@@ -33,7 +35,7 @@
         <entry key="app/src/main/res/layout/activity_orders.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_pending_order.xml" value="0.19537624660018132" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_product_detail_by_product_id.xml" value="0.19537624660018132" />
+        <entry key="app/src/main/res/layout/activity_product_detail_by_product_id.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_select_address.xml" value="0.19537624660018132" />
         <entry key="app/src/main/res/layout/activity_seller_dashboard.xml" value="0.17089755213055305" />
@@ -45,6 +47,7 @@
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/activity_started_order.xml" value="0.19537624660018132" />
         <entry key="app/src/main/res/layout/activity_store.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_sub_category.xml" value="0.19519927536231885" />
         <entry key="app/src/main/res/layout/activity_update.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_update_store.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_user_dashboard.xml" value="0.2" />
@@ -56,11 +59,13 @@
         <entry key="app/src/main/res/layout/category_slider_item.xml" value="0.19519927536231885" />
         <entry key="app/src/main/res/layout/checkout_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/delete_bottomsheet.xml" value="0.17074275362318841" />
+        <entry key="app/src/main/res/layout/filter_bottomsheet.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_cart.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_cart_address.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_cart_list.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_cart_payment.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_item.xml" value="0.19519927536231885" />
         <entry key="app/src/main/res/layout/fragment_products.xml" value="0.15443840579710144" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_seller_orders.xml" value="0.15443840579710144" />
@@ -73,6 +78,7 @@
         <entry key="app/src/main/res/layout/order_item.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/payment_list_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/pending_order_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/procced_to_pay_dailog.xml" value="0.25" />
         <entry key="app/src/main/res/layout/product_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/select_image_bottomsheet.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/seller_order_item.xml" value="0.33" />

@@ -1,7 +1,13 @@
 package com.firoz.shooply.util;
 
 public class Constant {
-    public static final String  BaseUrl="http://139.59.46.233/api/v1";
+    // Live url
+//    public static final String  BaseUrl="http://139.59.46.233/api/v1";
+
+     // Local url
+    public static final String  BaseUrl="http://192.168.10.70:8080/api/v1";
+
+
     public static final String LogIn=BaseUrl+"/auth/sign_in";
     public static final String SignUp=BaseUrl+"/auth/sign_up";
     public static final String getStoreByStoreId=BaseUrl+"/store/getStoreByStoreId";

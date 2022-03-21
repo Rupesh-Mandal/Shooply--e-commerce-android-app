@@ -127,43 +127,43 @@ public class SelectAddressActivity extends AppCompatActivity {
 //    }
 
     private void showAddAddressDailog() {
-        bottomSheetDialog = new BottomSheetDialog(this, R.style.bottom_shee_dailog_theam);
-        View v = LayoutInflater.from(this).
-                inflate(R.layout.add_address_bottomsheet, (ConstraintLayout) findViewById(R.id.bottom_sheet_layout));
-        bottomSheetDialog.setContentView(v);
-
-        EditText productDeliverAddress, userPhoneNumber;
-        Button addAddress;
-
-        productDeliverAddress = v.findViewById(R.id.productDeliverAddress);
-        userPhoneNumber = v.findViewById(R.id.userPhoneNumber);
-        addAddress = v.findViewById(R.id.addAddress);
-
-        addAddress.setOnClickListener(view1 -> {
-            if (productDeliverAddress.getText().toString().trim().isEmpty()) {
-                productDeliverAddress.setError("Please provide valid address");
-                productDeliverAddress.requestFocus();
-            } else if (userPhoneNumber.getText().toString().trim().isEmpty()) {
-                userPhoneNumber.setError("Please provide valid phone number");
-                userPhoneNumber.requestFocus();
-            } else {
-                progressDialog.show();
-                cartHelper.uploadAddress(productDeliverAddress.getText().toString().trim(), userPhoneNumber.getText().toString().trim(), new ResponsListener() {
-                    @Override
-                    public void onSuccess(String response) {
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        progressDialog.dismiss();
-                    }
-                });
-            }
-        });
-
-
-        bottomSheetDialog.show();
+//        bottomSheetDialog = new BottomSheetDialog(this, R.style.bottom_shee_dailog_theam);
+//        View v = LayoutInflater.from(this).
+//                inflate(R.layout.add_address_bottomsheet, (ConstraintLayout) findViewById(R.id.bottom_sheet_layout));
+//        bottomSheetDialog.setContentView(v);
+//
+//        EditText productDeliverAddress, userPhoneNumber;
+//        Button addAddress;
+//
+//        productDeliverAddress = v.findViewById(R.id.productDeliverAddress);
+//        userPhoneNumber = v.findViewById(R.id.userPhoneNumber);
+//        addAddress = v.findViewById(R.id.addAddress);
+//
+//        addAddress.setOnClickListener(view1 -> {
+//            if (productDeliverAddress.getText().toString().trim().isEmpty()) {
+//                productDeliverAddress.setError("Please provide valid address");
+//                productDeliverAddress.requestFocus();
+//            } else if (userPhoneNumber.getText().toString().trim().isEmpty()) {
+//                userPhoneNumber.setError("Please provide valid phone number");
+//                userPhoneNumber.requestFocus();
+//            } else {
+//                progressDialog.show();
+//                cartHelper.uploadAddress(productDeliverAddress.getText().toString().trim(), userPhoneNumber.getText().toString().trim(), new ResponsListener() {
+//                    @Override
+//                    public void onSuccess(String response) {
+//                        progressDialog.dismiss();
+//                    }
+//
+//                    @Override
+//                    public void onError(String error) {
+//                        progressDialog.dismiss();
+//                    }
+//                });
+//            }
+//        });
+//
+//
+//        bottomSheetDialog.show();
 
     }
 

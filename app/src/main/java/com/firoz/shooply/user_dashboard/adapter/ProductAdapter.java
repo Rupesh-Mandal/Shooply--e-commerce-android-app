@@ -53,12 +53,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.myViewHo
             userProductOnClick.onclick(product);
         });
 
-        if (position == productArrayList.size() - 1 || position == productArrayList.size() - 2) {
-            int paddingDp = 80;
-            float density = context.getResources().getDisplayMetrics().density;
-            int paddingPixel = (int)(paddingDp * density);
-            holder.itemView.setPadding(0, 0, 0, paddingPixel);
-        }
+//        if (position == productArrayList.size() - 1 || position == productArrayList.size() - 2) {
+//            int paddingDp = 80;
+//            float density = context.getResources().getDisplayMetrics().density;
+//            int paddingPixel = (int)(paddingDp * density);
+//            holder.itemView.setPadding(0, 0, 0, paddingPixel);
+//        }
     }
 
     @Override

@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:singleLine="true"
             android:text="Chicken Biriyani"
             android:textColor="@color/black"
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$ "
-                android:fontFamily="@font/krona_one_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/black"
                 android:textSize="22sp"
                  />
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="323"
-                android:fontFamily="@font/krona_one_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/black"
                 android:textSize="22sp"
                  />

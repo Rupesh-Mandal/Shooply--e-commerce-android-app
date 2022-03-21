@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firoz.shooply.R;
+import com.firoz.shooply.user_dashboard.activity.AddressBookActivity;
 import com.firoz.shooply.user_dashboard.me.activty.HistoryOrderActivity;
 import com.firoz.shooply.user_dashboard.me.activty.PendingOrderActivity;
 import com.firoz.shooply.user_dashboard.me.activty.SettingActivity;
@@ -28,7 +29,7 @@ public class ProfileFragment extends Fragment {
     View view;
     TextView name,email;
     CardView pending,started,history;
-    LinearLayout setting,privacy_policy,about_us;
+    LinearLayout setting,privacy_policy,about_us,addressBook;
     SharedPreferences sharedpreferences;
 
     public ProfileFragment() {
@@ -66,6 +67,7 @@ public class ProfileFragment extends Fragment {
         setting=view.findViewById(R.id.setting);
         privacy_policy=view.findViewById(R.id.privacy_policy);
         about_us=view.findViewById(R.id.about_us);
+        addressBook=view.findViewById(R.id.addressBook);
 
         pending.setOnClickListener(view1 -> {
             startActivity(new Intent(getContext(), PendingOrderActivity.class));
@@ -77,6 +79,10 @@ public class ProfileFragment extends Fragment {
         history.setOnClickListener(view1 -> {
             startActivity(new Intent(getContext(), HistoryOrderActivity.class));
 
+        });
+
+        addressBook.setOnClickListener(view -> {
+            startActivity(new Intent(getContext(), AddressBookActivity.class));
         });
 
         setting.setOnClickListener(view1 -> {

@@ -79,7 +79,7 @@ public class AddressBookActivity extends AppCompatActivity {
                     @Override
                     public void onDelete(AddressBookModel addressBookModel) {
                         progressDialog.show();
-                        Log.e("abcd",addressBookModel.getAddressId());
+                        Log.e("abcd", addressBookModel.getAddressId());
                         cartHelper.deleteByAddressId(addressBookModel.getAddressId(), new ResponsListener() {
                             @Override
                             public void onSuccess(String response) {
@@ -133,20 +133,26 @@ public class AddressBookActivity extends AppCompatActivity {
                 inflate(R.layout.update_address_bottomsheet, (ConstraintLayout) findViewById(R.id.bottom_sheet_layout));
         bottomSheetDialog.setContentView(v);
 
-        EditText productDeliverAddress, userPhoneNumber;
+        EditText productDeliverAddress,productDeliverInstruction, userPhoneNumber;
         Button addAddress;
 
         productDeliverAddress = v.findViewById(R.id.productDeliverAddress);
+        productDeliverInstruction = v.findViewById(R.id.productDeliverInstruction);
         userPhoneNumber = v.findViewById(R.id.userPhoneNumber);
         addAddress = v.findViewById(R.id.addAddress);
 
         productDeliverAddress.setText(addressBookModel.getProductDeliverAddress());
         userPhoneNumber.setText(addressBookModel.getUserPhoneNumber());
+        productDeliverInstruction.setText(addressBookModel.getProductDeliverInstruction());
 
         addAddress.setOnClickListener(view1 -> {
             if (productDeliverAddress.getText().toString().trim().isEmpty()) {
                 productDeliverAddress.setError("Please provide valid address");
                 productDeliverAddress.requestFocus();
+            } else if (productDeliverInstruction.getText().toString().trim().isEmpty()) {
+                productDeliverInstruction.setError("Please Provide Deliver Instruction");
+                productDeliverInstruction.requestFocus();
+
             } else if (userPhoneNumber.getText().toString().trim().isEmpty()) {
                 userPhoneNumber.setError("Please provide valid phone number");
                 userPhoneNumber.requestFocus();
@@ -155,6 +161,7 @@ public class AddressBookActivity extends AppCompatActivity {
                 progressDialog.show();
                 addressBookModel.setProductDeliverAddress(productDeliverAddress.getText().toString().trim());
                 addressBookModel.setUserPhoneNumber(userPhoneNumber.getText().toString().trim());
+                addressBookModel.setProductDeliverInstruction(productDeliverInstruction.getText().toString().trim());
                 cartHelper.updateAddress(addressBookModel, new ResponsListener() {
                     @Override
                     public void onSuccess(String response) {
@@ -181,11 +188,12 @@ public class AddressBookActivity extends AppCompatActivity {
                 inflate(R.layout.add_address_bottomsheet, (ConstraintLayout) findViewById(R.id.bottom_sheet_layout));
         bottomSheetDialog.setContentView(v);
 
-        EditText productDeliverAddress, userPhoneNumber;
+        EditText productDeliverAddress, productDeliverInstruction, userPhoneNumber;
         Button addAddress;
-        CheckBox useAsDefaultAddress=v.findViewById(R.id.useAsDefaultAddress);
+        CheckBox useAsDefaultAddress = v.findViewById(R.id.useAsDefaultAddress);
 
         productDeliverAddress = v.findViewById(R.id.productDeliverAddress);
+        productDeliverInstruction = v.findViewById(R.id.productDeliverInstruction);
         userPhoneNumber = v.findViewById(R.id.userPhoneNumber);
         addAddress = v.findViewById(R.id.addAddress);
 
@@ -193,27 +201,32 @@ public class AddressBookActivity extends AppCompatActivity {
             if (productDeliverAddress.getText().toString().trim().isEmpty()) {
                 productDeliverAddress.setError("Please provide valid address");
                 productDeliverAddress.requestFocus();
+            } else if (productDeliverInstruction.getText().toString().trim().isEmpty()) {
+                productDeliverInstruction.setError("Please Provide Deliver Instruction");
+                productDeliverInstruction.requestFocus();
+
             } else if (userPhoneNumber.getText().toString().trim().isEmpty()) {
                 userPhoneNumber.setError("Please provide valid phone number");
                 userPhoneNumber.requestFocus();
             } else {
                 progressDialog.show();
-                cartHelper.uploadAddress(productDeliverAddress.getText().toString().trim(), userPhoneNumber.getText().toString().trim(), new ResponsListener() {
+                cartHelper.uploadAddress(productDeliverAddress.getText().toString().trim(), productDeliverInstruction.getText().toString().trim(), userPhoneNumber.getText().toString().trim(), new ResponsListener() {
                     @Override
                     public void onSuccess(String response) {
                         progressDialog.dismiss();
-                        if (useAsDefaultAddress.isChecked()){
+                        if (useAsDefaultAddress.isChecked()) {
                             try {
-                                JSONObject jsonObject=new JSONObject(response);
-                                JSONObject addressBookObj=jsonObject.getJSONObject("AddressBookModel");
-                                AddressBookModel addressBookModel = new Gson().fromJson(addressBookObj.toString(), new TypeToken<AddressBookModel>() {}.getType());
+                                JSONObject jsonObject = new JSONObject(response);
+                                JSONObject addressBookObj = jsonObject.getJSONObject("AddressBookModel");
+                                AddressBookModel addressBookModel = new Gson().fromJson(addressBookObj.toString(), new TypeToken<AddressBookModel>() {
+                                }.getType());
                                 setDefaultDeliveryAddress(addressBookModel);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 loadAddress();
                             }
-                        }else {
+                        } else {
                             loadAddress();
                         }
 

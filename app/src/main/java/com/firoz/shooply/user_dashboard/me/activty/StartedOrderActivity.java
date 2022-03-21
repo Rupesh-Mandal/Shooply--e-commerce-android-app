@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.firoz.shooply.R;
 import com.firoz.shooply.model.OrderModel;
@@ -22,35 +23,71 @@ public class StartedOrderActivity extends AppCompatActivity {
     RecyclerView startedOrderRecycler;
     OrderHelper orderHelper;
     ProgressDialog progressDialog;
-    ArrayList<OrderModel> orderModelArrayList=new ArrayList<>();
-
+    ArrayList<OrderModel> orderModelArrayList;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    OrderStartedAdapter orderStartedAdapter;
+    int pageNumber=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_started_order);
+        orderModelArrayList=new ArrayList<>();
         startedOrderRecycler=findViewById(R.id.startedOrderRecycler);
-        startedOrderRecycler.setLayoutManager(new GridLayoutManager(this,1));
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,1);
+        startedOrderRecycler.setLayoutManager(gridLayoutManager);
+        orderStartedAdapter=new OrderStartedAdapter(StartedOrderActivity.this,orderModelArrayList);
+        startedOrderRecycler.setAdapter(orderStartedAdapter);
+
         orderHelper=new OrderHelper(this);
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Please Waite");
         progressDialog.setCancelable(false);
 
-        progressDialog.show();
 
-        orderHelper.getStartedOrder(new ResponsListener() {
+        loadStartedOrder();
+        startedOrderRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                Log.e("abcd",dx +""+dy);
+                if (dy > 0) { //check for scroll down
+                    visibleItemCount = gridLayoutManager.getChildCount();
+                    totalItemCount = gridLayoutManager.getItemCount();
+                    pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            Log.v("...", "Last Item Wow !");
+                            // Do pagination.. i.e. fetch new data
+                            loadStartedOrder();
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void loadStartedOrder() {
+        progressDialog.show();
+        loading = false;
+
+        orderHelper.getStartedOrder(pageNumber,new ResponsListener() {
             @Override
             public void onSuccess(String response) {
                 progressDialog.dismiss();
-                orderModelArrayList=new Gson().fromJson(response,new TypeToken<List<OrderModel>>() {}.getType());
-                startedOrderRecycler.setAdapter(new OrderStartedAdapter(StartedOrderActivity.this,orderModelArrayList));
+                orderModelArrayList.addAll(new Gson().fromJson(response,new TypeToken<List<OrderModel>>() {}.getType()));
+                orderStartedAdapter.notifyDataSetChanged();
+                pageNumber++;
+                loading = true;
             }
 
             @Override
             public void onError(String error) {
                 progressDialog.dismiss();
-
+                loading = true;
             }
         });
-
     }
 }

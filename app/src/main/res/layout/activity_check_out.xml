@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:text="Checkout"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -67,6 +67,13 @@
                 android:textSize="25dp" />
 
             <TextView
+                android:id="@+id/productDeliverInstruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="productDeliverInstruction"
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/userPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +112,7 @@
             android:text="Add Address "
             android:gravity="center"
             android:textColor="@color/theam_color"
-            android:fontFamily="@font/krona_one_regular"/>
+            android:fontFamily="@font/roboto_regular"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -148,24 +155,23 @@
                     android:layout_height="wrap_content"
                     android:text="Total: "
                     android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textSize="20dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/krona_one_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="$ "
-                    android:textColor="@color/theam_color"
+                    android:textColor="@color/black"
                     android:textSize="20dp" />
 
                 <TextView
                     android:id="@+id/total"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/krona_one_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="323"
-                    android:textColor="@color/theam_color"
+                    android:textColor="@color/black"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -226,14 +232,14 @@
             android:gravity="center_vertical"
             android:layout_weight="1">
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/cash_on_delivery"
+                android:id="@+id/proccedToPay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@drawable/login_signup_edittext_back"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
-                android:text="Cash on delivery"
+                android:text="Procced To Pay"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"

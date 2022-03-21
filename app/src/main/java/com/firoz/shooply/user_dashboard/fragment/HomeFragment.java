@@ -8,12 +8,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -47,6 +51,7 @@ import com.firoz.shooply.user_dashboard.adapter.CategoryAdapter;
 import com.firoz.shooply.user_dashboard.adapter.CategorySliderAdapter;
 import com.firoz.shooply.user_dashboard.adapter.ProductAdapter;
 import com.firoz.shooply.user_dashboard.helper.CartHelper;
+import com.firoz.shooply.user_dashboard.helper.ProductHelper;
 import com.firoz.shooply.util.CategoryOnClick;
 import com.firoz.shooply.util.ResponsListener;
 import com.firoz.shooply.util.UserProductOnClick;
@@ -65,12 +70,19 @@ import java.util.Map;
 
 public class HomeFragment extends Fragment {
     View view;
-    RecyclerView categories_recyclerView, all_product_recyclerView;
+    RecyclerView  all_product_recyclerView;
     SearchView search_view;
     SharedPreferences sharedpreferences;
     private static ProgressDialog progressDialog;
     SliderView sliderView;
     CartHelper cartHelper;
+    ProductHelper productHelper;
+    ArrayList<Product> productArrayList;
+    ProductAdapter productAdapter;
+    private boolean loading = true;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+
+    int pageNumber=0;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -83,6 +95,7 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
@@ -91,18 +104,38 @@ public class HomeFragment extends Fragment {
         initView();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void initView() {
-        categories_recyclerView = view.findViewById(R.id.categories_recyclerView);
+        productArrayList=new ArrayList<>();
+
         all_product_recyclerView = view.findViewById(R.id.all_product_recyclerView);
+        productAdapter=new ProductAdapter(getContext(), productArrayList, new UserProductOnClick() {
+            @Override
+            public void addToCartOnclick(Product product) {
+                showAddToCartDailog(product);
+            }
+
+            @Override
+            public void onclick(Product product) {
+                Intent intent=new Intent(getContext(), ProductDetailActivity.class);
+                intent.putExtra("product",new Gson().toJson(product));
+                startActivity(intent);
+            }
+        });
+        all_product_recyclerView.setAdapter(productAdapter);
+
+
         sliderView = view.findViewById(R.id.imageSlider);
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Please Wait");
         cartHelper=new CartHelper(getContext());
+        productHelper=new ProductHelper(getContext());
 
         search_view = view.findViewById(R.id.search_view);
-        categories_recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        all_product_recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),2);
+        all_product_recyclerView.setLayoutManager(gridLayoutManager);
 
 
         search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -121,6 +154,27 @@ public class HomeFragment extends Fragment {
         });
         loadCategory();
         loadAllProduct();
+
+        all_product_recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                Log.e("abcd",dx +""+dy);
+                if (dy > 0) { //check for scroll down
+                    visibleItemCount = gridLayoutManager.getChildCount();
+                    totalItemCount = gridLayoutManager.getItemCount();
+                    pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            Log.v("...", "Last Item Wow !");
+                            // Do pagination.. i.e. fetch new data
+                            loadAllProduct();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void loadCategory() {
@@ -161,44 +215,25 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadAllProduct() {
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        String Url = getAllProductUser;
-        progressDialog.show();
+        loading = false;
+        productHelper.findAllProduct(pageNumber, new ResponsListener() {
+            @Override
+            public void onSuccess(String response) {
+                productArrayList.addAll(new Gson().fromJson(response, new TypeToken<List<Product>>() {}.getType()));
+                productAdapter.notifyDataSetChanged();
+                pageNumber++;
+                loading = true;
 
-        StringRequest sr = new StringRequest(Request.Method.POST, Url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("abcd", response);
-                        progressDialog.dismiss();
-                        ArrayList<Product> productArrayList=new Gson().fromJson(response, new TypeToken<List<Product>>() {}.getType());
-                        ProductAdapter productAdapter=new ProductAdapter(getContext(), productArrayList, new UserProductOnClick() {
-                            @Override
-                            public void addToCartOnclick(Product product) {
-                                showAddToCartDailog(product);
+            }
 
-                            }
+            @Override
+            public void onError(String error) {
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                loading = true;
 
-                            @Override
-                            public void onclick(Product product) {
-                                Intent intent=new Intent(getContext(), ProductDetailActivity.class);
-                                intent.putExtra("product",new Gson().toJson(product));
-                                startActivity(intent);
-                            }
-                        });
-                        all_product_recyclerView.setAdapter(productAdapter);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("abcd", error.getMessage());
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                    }
-                });
-        queue.add(sr);
     }
     private void showAddToCartDailog(Product product) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.bottom_shee_dailog_theam);

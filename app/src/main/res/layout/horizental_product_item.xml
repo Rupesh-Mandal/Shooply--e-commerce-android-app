@@ -98,7 +98,7 @@
                         android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/krona_one_regular"
+                        android:fontFamily="@font/roboto_regular"
                         android:text="$"
                         android:layout_marginTop="2dp"
                         android:gravity="center"

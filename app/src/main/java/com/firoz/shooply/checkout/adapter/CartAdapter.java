@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -102,25 +103,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> 
             cartModel.setQuantity(String.valueOf((int) (c+1)));
             cartOnclick.increaseCart(cartModel);
         });
-        holder.menu.setOnClickListener(view -> {
-            PopupMenu popup = new PopupMenu(context, holder.menu);
-            //inflating menu from xml resource
-            popup.inflate(R.menu.cart_menu);
-            //adding click listener
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.deletBtn:
-                            cartOnclick.deleteCart(cartModel);
-                            break;
-
-                    }
-                    return false;
-                }
-            });
-            //displaying the popup
-            popup.show();
+        holder.deletBtn.setOnClickListener(view -> {
+            cartOnclick.deleteCart(cartModel);
         });
         cartIsCheckList.add(new CartIsCheck(holder.isCheck.isChecked()));
         holder.isCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -144,7 +128,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> 
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
-        ImageView item_img,menu;
+        ImageView item_img;
+        Button deletBtn;
         ImageView count_negative,count_positive;
         TextView item_title,item_rate,count,productDescription,mrp,discount;
         CheckBox isCheck;
@@ -152,7 +137,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.myViewHolder> 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             item_img=itemView.findViewById(R.id.item_img);
-            menu=itemView.findViewById(R.id.menu);
+            deletBtn=itemView.findViewById(R.id.deletBtn);
             item_title=itemView.findViewById(R.id.item_title);
             item_rate=itemView.findViewById(R.id.item_rate);
             count_negative=itemView.findViewById(R.id.count_negative);

@@ -10,7 +10,7 @@
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/profile_back"
+        android:background="@color/theam_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,12 +19,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:text="My Cart"
-            android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textSize="28dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$ "
-                    android:fontFamily="@font/krona_one_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:fontFamily="@font/krona_one_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:fontFamily="@font/krona_one_regular"
+                android:fontFamily="@font/roboto_regular"
                 android:text="Checkout"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"

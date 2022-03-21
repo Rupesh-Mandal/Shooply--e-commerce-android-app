@@ -147,6 +147,7 @@ public class CartHelper {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", userId);
+
                 return params;
             }
         };
@@ -211,7 +212,7 @@ public class CartHelper {
         queue.add(sr);
     }
 
-    public void uploadAddress(String productDeliverAddress, String userPhoneNumber, ResponsListener responsListener) {
+    public void uploadAddress(String productDeliverAddress,String productDeliverInstruction, String userPhoneNumber, ResponsListener responsListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String Url = addAddress;
 
@@ -235,6 +236,7 @@ public class CartHelper {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("productDeliverAddress", productDeliverAddress);
+                params.put("productDeliverInstruction", productDeliverInstruction);
                 params.put("userId", userId);
                 params.put("userPhoneNumber", userPhoneNumber);
                 return params;
@@ -417,7 +419,7 @@ public class CartHelper {
 
     }
 
-    public void addOrder(List<CartModel> selectCartModelList, AddressBookModel addressBookModel, ResponsListener responsListener) {
+    public void addOrder(List<CartModel> selectCartModelList, AddressBookModel addressBookModel,String deliveryType, ResponsListener responsListener) {
         String url = oderProduct;
 
         JSONArray orderArray = new JSONArray();
@@ -427,7 +429,9 @@ public class CartHelper {
                 jsonObject = new JSONObject(new Gson().toJson(selectCartModelList.get(i)));
                 jsonObject.put("productDeliverAddress", addressBookModel.getProductDeliverAddress());
                 jsonObject.put("userPhoneNumber", addressBookModel.getUserPhoneNumber());
+                jsonObject.put("productDeliverInstruction", addressBookModel.getProductDeliverInstruction());
                 jsonObject.put("userName", userName);
+                jsonObject.put("deliveryType", deliveryType);
 
                 double r1 = Double.parseDouble(selectCartModelList.get(i).getProductRate());
                 double c1 = Double.parseDouble(selectCartModelList.get(i).getQuantity());

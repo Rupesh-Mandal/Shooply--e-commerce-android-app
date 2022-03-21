@@ -38,6 +38,13 @@
             android:textSize="25dp" />
 
         <TextView
+            android:id="@+id/productDeliverInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="productDeliverInstruction"
+            android:textColor="@color/black" />
+
+        <TextView
             android:id="@+id/userPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -43,6 +43,7 @@ public class AddressBookAdapter extends RecyclerView.Adapter<AddressBookAdapter.
         AddressBookModel addressBookModel = addressArrayList.get(position);
         holder.productDeliverAddress.setText(addressBookModel.getProductDeliverAddress());
         holder.userPhoneNumber.setText(addressBookModel.getUserPhoneNumber());
+        holder.productDeliverInstruction.setText(addressBookModel.getProductDeliverInstruction());
         holder.menu.setOnClickListener(view -> {
             PopupMenu popup = new PopupMenu(context, holder.menu);
             //inflating menu from xml resource
@@ -77,7 +78,7 @@ public class AddressBookAdapter extends RecyclerView.Adapter<AddressBookAdapter.
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
-        TextView productDeliverAddress, userPhoneNumber;
+        TextView productDeliverAddress, userPhoneNumber,productDeliverInstruction;
 
         ImageView menu;
 
@@ -85,6 +86,7 @@ public class AddressBookAdapter extends RecyclerView.Adapter<AddressBookAdapter.
             super(itemView);
             productDeliverAddress = itemView.findViewById(R.id.productDeliverAddress);
             userPhoneNumber = itemView.findViewById(R.id.userPhoneNumber);
+            productDeliverInstruction = itemView.findViewById(R.id.productDeliverInstruction);
             menu = itemView.findViewById(R.id.menu);
         }
     }

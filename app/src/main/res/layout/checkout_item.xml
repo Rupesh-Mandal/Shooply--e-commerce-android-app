@@ -208,7 +208,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:text=" $ "
             android:textColor="@color/black" />
 
@@ -216,7 +216,7 @@
             android:id="@+id/totalRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:text="334"
             android:textColor="@color/black" />
 
@@ -238,14 +238,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:text=" $ " />
 
         <TextView
             android:id="@+id/discountAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:text="334" />
 
     </LinearLayout>

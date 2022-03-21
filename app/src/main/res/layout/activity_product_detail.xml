@@ -31,7 +31,7 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/krona_one_regular"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="$ "
                     android:textColor="@color/black"
                     android:textSize="25dp"
@@ -84,7 +84,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="$ "
-                            android:fontFamily="@font/krona_one_regular"
+                            android:fontFamily="@font/roboto_regular"
                             android:textColor="@color/grey"
                             android:textSize="20sp" />
 
@@ -205,15 +205,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/storeBtn"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/store"
-            android:tint="@color/theam_color"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -225,11 +216,11 @@
             android:weightSum="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/storeBtn"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/buyNowBtn"
+                android:id="@+id/storeBtn"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
@@ -237,7 +228,7 @@
                 android:background="@drawable/login_signup_edittext_back"
                 android:elevation="@dimen/edit_text_elivation"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Buy Now"
+                android:text="Vist Store"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 

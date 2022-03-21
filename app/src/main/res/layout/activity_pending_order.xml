@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/krona_one_regular"
+            android:fontFamily="@font/roboto_regular"
             android:gravity="center_vertical"
             android:text="Pending To Start"
             android:textColor="@color/black"

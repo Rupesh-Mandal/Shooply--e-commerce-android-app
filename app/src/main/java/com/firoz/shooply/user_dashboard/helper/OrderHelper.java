@@ -47,7 +47,7 @@ public class OrderHelper {
         }
     }
 
-    public void getOrderHistory(ResponsListener responsListener) {
+    public void getOrderHistory(int page,ResponsListener responsListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String Url = getOrderHistory;
         StringRequest sr = new StringRequest(Request.Method.POST, Url,
@@ -69,13 +69,17 @@ public class OrderHelper {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", userId);
+                params.put("page", String.valueOf(page));
+                params.put("pageSize", "10");
+                params.put("sort", "DESC");
+                params.put("sortBy", "createdTime");
                 return params;
             }
         };
         queue.add(sr);
     }
 
-    public void getStartedOrder(ResponsListener responsListener) {
+    public void getStartedOrder(int page,ResponsListener responsListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String Url = getStartedOrder;
         StringRequest sr = new StringRequest(Request.Method.POST, Url,
@@ -97,13 +101,17 @@ public class OrderHelper {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", userId);
+                params.put("page", String.valueOf(page));
+                params.put("pageSize", "10");
+                params.put("sort", "DESC");
+                params.put("sortBy", "createdTime");
                 return params;
             }
         };
         queue.add(sr);
     }
 
-    public void getPendingOrder(ResponsListener responsListener) {
+    public void getPendingOrder(int page,ResponsListener responsListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String Url = getPendingOrder;
         StringRequest sr = new StringRequest(Request.Method.POST, Url,
@@ -125,6 +133,10 @@ public class OrderHelper {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", userId);
+                params.put("page", String.valueOf(page));
+                params.put("pageSize", "10");
+                params.put("sort", "DESC");
+                params.put("sortBy", "createdTime");
                 return params;
             }
         };

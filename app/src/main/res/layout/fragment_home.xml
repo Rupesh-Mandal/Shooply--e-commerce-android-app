@@ -10,26 +10,56 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:background="@drawable/profile_back"
-        android:layout_height="@android:dimen/app_icon_size"
+        android:background="@color/theam_color"
+        android:layout_height="?actionBarSize"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+
         <TextView
             android:id="@+id/categoriName"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/krona_one_regular"
-            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/app_name"
-            android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textSize="28dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/categoriName"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <SearchView
+                android:id="@+id/search_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_back"
+                android:iconifiedByDefault="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="end"
+                android:queryBackground="@android:color/transparent"
+                android:queryHint="Search"
+                />
+
+        </LinearLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -44,22 +74,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <SearchView
-                android:id="@+id/search_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/search_back"
-                android:iconifiedByDefault="false"
-                android:queryBackground="@android:color/transparent"
-                android:queryHint="Search" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="130dp"
                 android:layout_margin="10dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,25 +106,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/krona_one_regular"
-                android:text="Categories"
-                android:textColor="@color/h1_text_color"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categories_recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:layout_marginStart="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,8 +113,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/krona_one_regular"
-                android:text="All Products"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Just For You"
                 android:textColor="@color/h1_text_color"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"

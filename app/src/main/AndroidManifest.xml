@@ -23,6 +23,12 @@
             android:name=".user_dashboard.activity.CartActivity"
             android:exported="false" />
         <activity
+            android:name=".user_dashboard.activity.ProccedToPayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".user_dashboard.activity.SubCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".user_dashboard.me.activty.SettingActivity"
             android:exported="false" />
         <activity

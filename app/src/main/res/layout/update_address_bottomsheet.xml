@@ -41,6 +41,21 @@
             android:textColor="@color/theam_color" />
 
         <EditText
+            android:id="@+id/productDeliverInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/spinner_back"
+            android:drawableStart="@drawable/ic_baseline_delivery_dining_24"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/theam_color"
+            android:elevation="@dimen/edit_text_elivation"
+            android:hint="Delivery Instruction"
+            android:inputType="text"
+            android:padding="@dimen/edit_text_padding"
+            android:textColor="@color/theam_color" />
+
+        <EditText
             android:id="@+id/userPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="50dp"

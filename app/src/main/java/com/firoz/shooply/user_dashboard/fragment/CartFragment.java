@@ -42,6 +42,10 @@ public class CartFragment extends Fragment {
     TextView total,check_out_btn;
     ProgressDialog progressDialog;
     private static List<CartModel> cartModelArrayList=new ArrayList<>();
+    private boolean loading = true;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+
+    int pageNumber=0;
 
     CartHelper cartHelper;
     public CartFragment() {

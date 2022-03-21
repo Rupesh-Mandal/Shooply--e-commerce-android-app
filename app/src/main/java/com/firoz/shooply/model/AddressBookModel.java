@@ -6,17 +6,27 @@ public class AddressBookModel {
     private String userId;
     private String addressId;
     private String productDeliverAddress;
+    private String productDeliverInstruction;
     private String userPhoneNumber;
 
     public AddressBookModel() {
     }
 
-    public AddressBookModel(Long id, String userId, String addressId, String productDeliverAddress, String userPhoneNumber) {
+    public AddressBookModel(Long id, String userId, String addressId, String productDeliverAddress, String productDeliverInstruction, String userPhoneNumber) {
         this.id = id;
         this.userId = userId;
         this.addressId = addressId;
         this.productDeliverAddress = productDeliverAddress;
+        this.productDeliverInstruction = productDeliverInstruction;
         this.userPhoneNumber = userPhoneNumber;
+    }
+
+    public String getProductDeliverInstruction() {
+        return productDeliverInstruction;
+    }
+
+    public void setProductDeliverInstruction(String productDeliverInstruction) {
+        this.productDeliverInstruction = productDeliverInstruction;
     }
 
     public Long getId() {
